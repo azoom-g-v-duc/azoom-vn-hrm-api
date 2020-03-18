@@ -1,0 +1,6 @@
+SET CHARACTER_SET_CLIENT = utf8;
+SET CHARACTER_SET_CONNECTION = utf8;
+
+ALTER TABLE account_statement
+  ADD COLUMN tags JSON NOT NULL
+  AFTER refund_amount
