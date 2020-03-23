@@ -32,16 +32,18 @@ const createToken = async(userId,emailUser,tokenCode) => {
 
 const checkLogin = async(email,password) => {
   const result={isHas:false, data:''}
-  const tokenUser = await getTable('users').where('email', '==', email).where('password','==',password).get()
+  const tokenUser = await getTable('users').where('email', '==', email).get()
     .then(snapshot=>
     {
-    if (snapshot.empty) {
-        return false
-      }
-    snapshot.forEach(doc => {
-        result.data = doc.data()
+      if (snapshot.empty) {
+          return false
+        }
+      snapshot.forEach(doc => {
+        if(bcrypt.compare(password, doc.data().password)){
+          result.isHas = true
+          result.data = doc.data()
+        }
       })
-    result.isHas = true
     return result
     })
   return tokenUser
