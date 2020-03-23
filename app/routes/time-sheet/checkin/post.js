@@ -15,6 +15,7 @@ module.exports = async (req, res) => {
 
 const savetimeSheet = async(timeSheetReq) => {
   console.log(timeSheetReq)
+  timeSheet.map={name:"namemap"}
   const timeSheet = await getTable('timeSheet').doc('ghgj').collection(timeSheetReq.id).doc(timeSheetReq.id).set(timeSheetReq)
   return timeSheet
 }
