@@ -7,7 +7,7 @@ const _ = require("lodash")
 
 module.exports = async (req, res) => {
   const resbody = { 'status':true,'message':'oke','messageCode':'001','data':{'name':'dung'}}
-  const data =_.defaultsDeep(req.body,timeSheetReq)
+  const data = _.defaultsDeep(req.body,timeSheetReq)
   data.password = bcrypt.hashSync(data.password, 10)
   await savetimeSheet(data)
   return res.status(200).json(resbody);
