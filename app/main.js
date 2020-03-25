@@ -29,6 +29,15 @@ express.response.sendStatus = function (statusCode) {
 }
 
 const app = express()
+// app.use((req, res, next) => {
+//     let oldSend = res.send
+//     res.send = function(message='',data='') {
+//       res.send = oldSend 
+//       return res.send({isSuccess: res.statusCode <=300, message:message, data:data}) 
+//     }
+//     next()
+// })
+
 app.use(bodyParser.json({ limit: '50mb' }))
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))
 app.use(

@@ -21,30 +21,3 @@ export default async function (req, res) {
     return res.sendStatus(500)
   }
 }
-
-const createToken = async(userId,emailUser,tokenCode) => {
-  const id = userId+Date.now()
-  const data = _.defaultsDeep({id:id, userId:userId,emailUser:emailUser,tokenCode:tokenCode},userToken)
-  const tokenUser = await getTable('userToken').doc(id).set(data)
-
-  return tokenUser
-}
-
-const checkLogin = async(email,password) => {
-  const result={isHas:false, data:''}
-  const tokenUser = await getTable('users').where('email', '==', email).get()
-    .then(snapshot=>
-    {
-      if (snapshot.empty) {
-          return false
-        }
-      snapshot.forEach(doc => {
-        if(bcrypt.compare(password, doc.data().password)){
-          result.isHas = true
-          result.data = doc.data()
-        }
-      })
-    return result
-    })
-  return tokenUser
-}

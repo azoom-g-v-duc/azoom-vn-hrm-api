@@ -1,6 +1,6 @@
 const firebase = require('firebase')
-const initConfigDbType = { firebase:true}
-const isDatabase = { firebase:false,isInit:false}
+const initConfigDbType = { firebase: true }
+const isDatabase = { firebase: false, isInit: false }
 let database = ''
 
 export const initCloudStoreFirebase = () => {
@@ -14,23 +14,23 @@ export const initCloudStoreFirebase = () => {
     appId: process.env.FIRE_BASE_APP_ID
   }
   isDatabase.firebase = true
-  firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig)
   return firebase.firestore()
 }
+
 export const initDatabase = () => {
-    if (initConfigDbType.firebase){
-        isDatabase.isInit = true
-        return database = initCloudStoreFirebase()
-    }
+  if (initConfigDbType.firebase) {
+    isDatabase.isInit = true
+    return (database = initCloudStoreFirebase())
+  }
 }
 
-export const getTable = (tableName) => {
-    if (!isDatabase.isInit){
-        return  initDatabase().collection(tableName)
-    }
-    if(isDatabase.firebase)
-    {
-        return database.collection(tableName)
-    }
-    return false
+export const getTable = tableName => {
+  if (!isDatabase.isInit) {
+    return initDatabase().collection(tableName)
+  }
+  if (isDatabase.firebase) {
+    return database.collection(tableName)
+  }
+  return false
 }
