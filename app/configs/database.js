@@ -15,6 +15,9 @@ export const initCloudStoreFirebase = () => {
   }
   isDatabase.firebase = true
   firebase.initializeApp(firebaseConfig)
+  const datarole = { id: '1', name: 'admin' }
+  firebase.firestore().collection(process.env.DB_TABLE_POSITION_PERMISSION).doc(datarole.id).set(datarole)
+
   return firebase.firestore()
 }
 

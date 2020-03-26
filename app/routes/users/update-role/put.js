@@ -1,17 +1,16 @@
-import {
-  user as userReq,
-  saveUser,
-  isValidUser
-} from '@cloudStoreDatabase/user'
-
-const bcrypt = require('bcrypt')
-const _ = require('lodash')
+import { updateUser } from '@cloudStoreDatabase/user'
+import { isAdmin } from '@helpers/check-rule'
 
 module.exports = async (req, res) => {
-  const data = _.defaultsDeep(req.body, userReq)
-  if (await isValidUser(data.id, data.email)) {
-    saveUser(data)
-    return res.send(data)
+  if (!isAdmin(req.user.possitionPermissionId)) {
+    return res.sendStatus(403)
+  }
+  const { possitionPermissionId = 0, userId = '' } = req.body
+  const result = await updateUser(userId, {
+    possitionPermissionId: possitionPermissionId
+  })
+  if (result) {
+    return res.send(await result)
   }
   return res.sendStatus(400)
 }

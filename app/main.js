@@ -32,8 +32,8 @@ const app = express()
 // app.use((req, res, next) => {
 //     let oldSend = res.send
 //     res.send = function(message='',data='') {
-//       res.send = oldSend 
-//       return res.send({isSuccess: res.statusCode <=300, message:message, data:data}) 
+//       res.send = oldSend
+//       return res.send({isSuccess: res.statusCode <=300, message:message, data:data})
 //     }
 //     next()
 // })

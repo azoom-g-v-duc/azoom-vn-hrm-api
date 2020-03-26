@@ -1,5 +1,5 @@
-const firebase =require('firebase')
-let database=''
+const firebase = require('firebase')
+let database = ''
 export const getDatabase = () => {
   const firebaseConfig = {
     apiKey: process.env.FIRE_BASE_API_KEY,
@@ -10,29 +10,32 @@ export const getDatabase = () => {
     messagingSenderId: process.env.FIRE_BASE_MESSAGING_SENDER_ID,
     appId: process.env.FIRE_BASE_APP_ID
   }
-  firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig)
   return firebase.firestore()
 }
-export const initTable = () =>
-{
+export const initTable = () => {}
 
-}
-
-export const getTable = (tableName) => {
-  if (!database){
+export const getTable = tableName => {
+  if (!database) {
     database = getDatabase()
   }
-  return  database.collection(tableName)
+  return database.collection(tableName)
 }
-export const InsertData = (tableName,docId,data) => {
-  if (!database){
+export const InsertData = (tableName, docId, data) => {
+  if (!database) {
     database = getDatabase()
   }
-  return  database.collection(tableName).doc(docId).set(data)
+  return database
+    .collection(tableName)
+    .doc(docId)
+    .set(data)
 }
-export const UpdateData = (tableName,docId,data) => {
-  if (!database){
+export const UpdateData = (tableName, docId, data) => {
+  if (!database) {
     database = getDatabase()
   }
-  return  database.collection(tableName).doc(docId).update(data)
+  return database
+    .collection(tableName)
+    .doc(docId)
+    .update(data)
 }

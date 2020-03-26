@@ -1,13 +1,13 @@
 import {
   timeSheet as timeSheetReq,
-  savetimeSheet
+  savetimeSheet,
 } from '@cloudStoreDatabase/time-sheet'
-import { getTable } from '@configs/database'
+const date = require('date-and-time')
 
 const _ = require('lodash')
 
 module.exports = async (req, res) => {
-  const data = _.defaultsDeep(req.body, timeSheetReq)
-  await savetimeSheet(req.user, data)
+  timeSheetReq.stateTime = date.format(new Date(), 'HH:mm:ss')
+  await savetimeSheet(req.user, timeSheetReq)
   return res.sendStatus(200)
 }
