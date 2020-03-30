@@ -11,33 +11,10 @@ responses:
         schema:
           type: object
           properties:
-            success:
-              type: boolean
-              description: login successfully
-              example: true
             message:
               type: string
-              description: Notification about login.
-              example: The message has been sent successfully.
-            data:
-              type: object
-              item:
-                type: object
-                properties:
-                  email:
-                    type: string
-                    description: email.
-                  name:
-                    type: string
-                    description: name
-                  accessToken:
-                    type: string
-              example:
-                {
-                  "email": "v.t.dung@gmail.com",
-                  "name": "Dung",
-                  "accessToken": "account",
-                }
+              description: Notification about checkout.
+              example: Checkout successfully.
   400:
     $ref: "#/components/responses/400"
   401:

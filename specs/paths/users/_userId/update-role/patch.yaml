@@ -6,7 +6,7 @@ description: Updated role for user
 parameters:
   - userId: page
     in: path
-    description: userId
+    description: User ID
     example: azoom0019
     schema:
       type: string
@@ -17,7 +17,7 @@ requestBody:
         properties:
           positionPermissionId:
             type: integer
-            description: input position permission id. 1-admin, 2-editor, 3-project manager , 4	user
+            description: Input position permission id. 1-admin, 2-editor, 3-project manager , 4	user
             example: 3
         required:
           - positionPermissionId
