@@ -1,0 +1,78 @@
+operationId: user/{userId}/update-role
+tags:
+  - Users
+summary: POST user/{userId}/update-role
+description: Updated role for user
+parameters:
+  - userId: page
+    in: path
+    description: userId
+    example: azoom0019
+    schema:
+      type: string
+requestBody:
+  content:
+    application/json:
+      schema:
+        properties:
+          positionPermissionId:
+            type: integer
+            description: input position permission id. 1-admin, 2-editor, 3-project manager , 4	user
+          example: 3
+        required:
+          - positionPermissionId
+responses:
+  200:
+    description: Success
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            id:
+              type: string
+            userName:
+              type: string
+            firstName:
+              type: string
+            lastName:
+              type: string
+            email:
+              type: string
+            password:
+              type: string
+            birthDate:
+              type: string
+            address:
+              type: string
+            tel:
+              type: string
+            zipcode:
+              type: string
+            dateJoined:
+              type: string
+          example:
+            {
+              "id": "azoom0019",
+              "userName": "azoomvn",
+              "firstName": "azoom",
+              "lastName": "vu",
+              "email": "v.t@azoom.jp",
+              "password": "$2b$10$y2lyAS5sXc3w7dqDNSCiyOO3OtPbGUDiticgSkPjhqXb.2aQXoMES",
+              "birthDate": "1996/05/4",
+              "address": "hn-vn",
+              "tel": "096985478",
+              "zipcode": "10000",
+              "dateJoined": "2020/03/27",
+              "zipCode": "",
+              "possitionPermissionId": 3,
+              "isActive": true,
+              "created": "2020/03/30 11:39:42",
+              "updated": "",
+            }
+  400:
+    $ref: "#/components/responses/400"
+  401:
+    $ref: "#/components/responses/401"
+  500:
+    $ref: "#/components/responses/500"
