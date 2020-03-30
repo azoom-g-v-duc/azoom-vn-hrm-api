@@ -55,7 +55,11 @@ responses:
                     "isActive": true,
                     "lastName": "vu",
                     "password": "$2b$10$AnPvQLT4fGBQjrF2Unw/j.xwUfht8TLgqaiMi1DH2E.ECtjc3KoQ.",
+<<<<<<< HEAD
                     "positionPermissionId": 3,
+=======
+                    "possitionPermissionId": 3,
+>>>>>>> :construction_worker: update spec for  get user list
                     "tel": "096985478",
                     "updated": "",
                     "userName": "azoomvn",

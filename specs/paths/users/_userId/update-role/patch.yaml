@@ -1,7 +1,7 @@
 operationId: user/{userId}/update-role
 tags:
   - Users
-summary: POST user/{userId}/update-role
+summary: PATCH /users/{userId}/update-role
 description: Updated role for user
 parameters:
   - userId: page
@@ -18,7 +18,7 @@ requestBody:
           positionPermissionId:
             type: integer
             description: input position permission id. 1-admin, 2-editor, 3-project manager , 4	user
-          example: 3
+            example: 3
         required:
           - positionPermissionId
 responses:
