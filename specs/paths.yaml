@@ -4,7 +4,7 @@
 /authentications/logout/{isAll}/:
   post:
     $ref: paths/authentications/logout/post.yaml
-/applications/timesheets/:
+/applications/time-sheet/:
   post:
     $ref: paths/applications/timesheets/post.yaml
   get:

@@ -1,0 +1,29 @@
+operationId: /applications/time-sheet/{timesheetAppId}/approved/
+tags:
+  - Applications
+summary: PATCH /applications/time-sheet/{timesheetAppId}/approved/
+description: Approved to application
+parameters:
+  - timesheetAppId: page
+    in: path
+    description: Timesheet application ID
+    example: azoom0019
+    schema:
+      type: string
+responses:
+  200:
+    description: Success
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+          example: { "message": "Approved successfully." }
+  400:
+    $ref: "#/components/responses/400"
+  401:
+    $ref: "#/components/responses/401"
+  500:
+    $ref: "#/components/responses/500"

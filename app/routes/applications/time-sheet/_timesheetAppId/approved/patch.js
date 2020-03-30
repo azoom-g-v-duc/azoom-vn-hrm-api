@@ -14,8 +14,9 @@ import { isProjectManager, isAdmin, isEditor } from '@helpers/check-rule'
 import { getManagerProjectList } from '@cloudStoreDatabase/project'
 
 module.exports = async (req, res) => {
-  const { timsheetAppId = '' } = req.body
-  const data = await getTsApp(timsheetAppId)
+  const { timesheetAppId } = req.params //.timesheetAppId
+  console.log(timesheetAppId)
+  const data = await getTsApp(timesheetAppId)
   console.log(data)
   if (!data) {
     return res.sendStatus(404)
