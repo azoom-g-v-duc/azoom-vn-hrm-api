@@ -1,0 +1,68 @@
+operationId: member.create
+tags:
+  - projects
+summary: POST /member/
+description: Create new project.
+requestBody:
+  content:
+    application/json:
+      schema:
+        properties:
+          projectId:
+            type: string
+            format: hh:mm
+            description: input id of project
+            example: "hr001"
+          memberId:
+            type: string
+            format: hh:mm
+            description: Input user id of member, who is a project participant.
+            example: "azoom-hr-vn"
+          isJoining:
+            type: boolean
+            description: input status joining of member. flase-not joining, true- in joining
+            example: 0
+          managerId:
+            type: string
+            description: input id of project manager.
+            example: "0069"
+        required:
+          - projectId
+          - memberId
+          - isJoining
+          - managerId
+responses:
+  200:
+    description: Success
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+              description: create a new project successfully
+              example: true
+            message:
+              type: string
+              description: Notification about error.
+              example: The message has been sent successfully.
+            data:
+              type: object
+              item:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    description: email.
+                  name:
+                    type: string
+                    description: name
+                  accessToken:
+                    type: string
+  400:
+    $ref: "#/components/responses/400"
+  401:
+    $ref: "#/components/responses/401"
+  500:
+    $ref: "#/components/responses/500"

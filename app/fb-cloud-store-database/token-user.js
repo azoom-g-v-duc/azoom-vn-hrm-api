@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+import { getTable } from '@configs/database'
+>>>>>>>  create spec to login and logout
 const date = require('date-and-time')
 const _ = require('lodash')
 

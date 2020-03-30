@@ -1,0 +1,46 @@
+operationId: timesheet.checkout
+tags:
+  - time-sheet
+summary: POST checkout for time-sheet
+description: checkout for time start working.
+responses:
+  200:
+    description: Success
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+              description: login successfully
+              example: true
+            message:
+              type: string
+              description: Notification about login.
+              example: The message has been sent successfully.
+            data:
+              type: object
+              item:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    description: email.
+                  name:
+                    type: string
+                    description: name
+                  accessToken:
+                    type: string
+              example:
+                {
+                  "email": "v.t.dung@gmail.com",
+                  "name": "Dung",
+                  "accessToken": "account",
+                }
+  400:
+    $ref: "#/components/responses/400"
+  401:
+    $ref: "#/components/responses/401"
+  500:
+    $ref: "#/components/responses/500"

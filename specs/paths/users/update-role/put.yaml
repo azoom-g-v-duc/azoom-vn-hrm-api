@@ -1,0 +1,52 @@
+operationId: authentictions.login
+tags:
+  - authentictions
+summary: POST /authentictions-login
+description: login to hr-azoom-vn system
+requestBody:
+  content:
+    application/json:
+      schema:
+        properties:
+          positionPermissionId:
+            type: string
+            format: date-time
+            description: input position permission id. 1-admin, 2-editor, 3-project manager , 4	user
+        required:
+          - positionPermissionId
+responses:
+  200:
+    description: Success
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+              description: login successfully
+              example: true
+            message:
+              type: string
+              description: Notification about login.
+              example: The message has been sent successfully.
+            data:
+              type: object
+              item:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    description: email.
+                  name:
+                    type: string
+                    description: name
+                  accessToken:
+                    type: string
+              example:
+  400:
+    $ref: "#/components/responses/400"
+  401:
+    $ref: "#/components/responses/401"
+  500:
+    $ref: "#/components/responses/500"
