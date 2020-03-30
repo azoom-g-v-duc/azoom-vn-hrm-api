@@ -29,15 +29,15 @@ export const savetimeSheet = async (user, timeSheetReq) => {
   return timeSheet
 }
 
-export const updateTimesheet = async (user, timesheetReq) => {
+export const updateTimesheet = async (userId, timesheetReq) => {
   const timeSheetId = setTimesheetId()
   const queryData = await getTable(process.env.DB_TABLE_TIME_SHEET)
-    .doc(user.id)
+    .doc(userId)
     .collection(timeSheetId)
     .get()
   queryData.docs.map(item =>
     getTable(process.env.DB_TABLE_TIME_SHEET)
-      .doc(user.id)
+      .doc(userId)
       .collection(item.id)
       .doc(item.id)
       .update(timesheetReq)
@@ -48,7 +48,7 @@ export const updateTimesheet = async (user, timesheetReq) => {
 export const getTimesheetUserday = async (userId, day) => {
   const queryData = await getTable(process.env.DB_TABLE_TIME_SHEET)
     .doc(userId)
-    .collection(setTimesheetId(date.format(day, 'YYYYMMDD')))
+    .collection(setTimesheetId(date.format(new Date(day), 'YYYYMMDD')))
     .get()
-  return !queryData.empty ? queryData.docs.map(item => item.data()) : ''
+  return !queryData.empty ? queryData.docs[0].data() : ''
 }

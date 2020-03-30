@@ -1,8 +1,8 @@
-operationId: member.create
+operationId: /projects/member/
 tags:
-  - projects
+  - Projects
 summary: POST /member/
-description: Create new project.
+description: Add member to project
 requestBody:
   content:
     application/json:
@@ -10,22 +10,20 @@ requestBody:
         properties:
           projectId:
             type: string
-            format: hh:mm
-            description: input id of project
+            description: Input project ID
             example: "hr001"
           memberId:
             type: string
-            format: hh:mm
-            description: Input user id of member, who is a project participant.
-            example: "azoom-hr-vn"
+            description: Input user ID of member, who is a project participant.
+            example: "0008"
           isJoining:
             type: boolean
-            description: input status joining of member. flase-not joining, true- in joining
-            example: 0
+            description: Input status joining of member. flase - not joining, true - in joining
+            example: true
           managerId:
             type: string
-            description: input id of project manager.
-            example: "0069"
+            description: Input ID of project manager.
+            example: "azoom0069"
         required:
           - projectId
           - memberId
@@ -39,27 +37,34 @@ responses:
         schema:
           type: object
           properties:
-            success:
-              type: boolean
-              description: create a new project successfully
-              example: true
-            message:
+            id:
               type: string
-              description: Notification about error.
-              example: The message has been sent successfully.
-            data:
-              type: object
-              item:
-                type: object
-                properties:
-                  email:
-                    type: string
-                    description: email.
-                  name:
-                    type: string
-                    description: name
-                  accessToken:
-                    type: string
+            projectId:
+              type: string
+            memberId:
+              type: string
+            isJoining:
+              type: boolean
+            createdUserId:
+              type: string
+            isActive:
+              type: boolean
+            created:
+              type: string
+              format: date-time
+            updated:
+              format: date-time
+          example:
+            {
+              "projectId": "azoom006979",
+              "memberId": "azoom0060839",
+              "id": "azoom006979_azoom006083920200330",
+              "isJoining": true,
+              "isActive": true,
+              "createdUserId": "azoom009",
+              "created": "2020/03/30 14:58:16",
+              "updated": "",
+            }
   400:
     $ref: "#/components/responses/400"
   401:

@@ -1,5 +1,5 @@
 import {
-  saveProjectMember as pmReq,
+  projectMember as pmReq,
   saveProjectMember,
   isValidProjectMember
 } from '@cloudStoreDatabase/project-member'
@@ -36,8 +36,7 @@ module.exports = async (req, res) => {
   }
   if (await isValidProjectMember(data)) {
     data.createdUserId = req.user.id
-    saveProjectMember(data)
-    return res.send(data)
+    return res.send(await saveProjectMember(data))
   }
   return res.sendStatus(400)
 }

@@ -7,11 +7,11 @@ import {
 const date = require('date-and-time')
 
 module.exports = async (req, res) => {
-  timeSheetReq.start = date.format(new Date(), 'HH:mm:ss')
+  timeSheetReq.start = date.format(new Date(), 'HH:mm')
   if (await getTimesheetUserday(req.user.id, new Date())) {
-    await updateTimesheet(req.user, { startTime: timeSheetReq.endTime })
+    await updateTimesheet(req.user.id, { startTime: timeSheetReq.endTime })
   } else {
-    savetimeSheet(req.user, timeSheetReq)
+    savetimeSheet(req.user.id, timeSheetReq)
   }
   return res.send({ message: 'Checkin successfully.' })
 }

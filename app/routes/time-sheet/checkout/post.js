@@ -7,7 +7,7 @@ import {
 const date = require('date-and-time')
 
 module.exports = async (req, res) => {
-  timeSheetReq.endTime = date.format(new Date(), 'HH:mm:ss')
+  timeSheetReq.endTime = date.format(new Date(), 'HH:mm')
   if (await getTimesheetUserday(req.user.id, new Date())) {
     await updateTimesheet(req.user, { endTime: timeSheetReq.endTime })
   } else {
