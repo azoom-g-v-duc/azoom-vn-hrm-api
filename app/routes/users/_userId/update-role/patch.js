@@ -7,14 +7,10 @@ module.exports = async (req, res) => {
     return res.sendStatus(403)
   }
   const { possitionPermissionId = 4 } = req.body
-  const user = await getUserId(userId)
 
-  if (user) {
-    return res.send(
-      await updateUser(userId, {
-        possitionPermissionId: possitionPermissionId
-      })
-    )
-  }
-  return res.sendStatus(400)
+  return (await updateUser(userId, {
+    possitionPermissionId: possitionPermissionId
+  }))
+    ? res.send(await getUserId(userId))
+    : res.sendStatus(400)
 }
