@@ -12,7 +12,9 @@ export const timeSheet = {
   isCorrect: false
 }
 
-export const invaildTimesheet = () => {}
+export const invaildTimesheet = data => {
+  return true
+}
 
 export const setTimesheetId = () => {
   return date.format(new Date(), 'YYYYMMDD')

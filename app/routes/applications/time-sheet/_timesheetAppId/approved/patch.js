@@ -5,19 +5,15 @@ import {
 } from '@cloudStoreDatabase/timesheet-application'
 import {
   updateTimesheet,
-  savetimeSheet,
-  getTimesheetUserday,
-  timeSheet as timeSheetReq
+  getTimesheetUserday
 } from '@cloudStoreDatabase/time-sheet'
 
 import { isProjectManager, isAdmin, isEditor } from '@helpers/check-rule'
 import { getManagerProjectList } from '@cloudStoreDatabase/project'
 
 module.exports = async (req, res) => {
-  const { timesheetAppId } = req.params //.timesheetAppId
-  console.log(timesheetAppId)
+  const { timesheetAppId } = req.params
   const data = await getTsApp(timesheetAppId)
-  console.log(data)
   if (!data) {
     return res.sendStatus(404)
   }
