@@ -12,25 +12,24 @@ import { isProjectManager, isAdmin, isEditor } from '@helpers/check-rule'
 import { getManagerProjectList } from '@cloudStoreDatabase/project'
 
 module.exports = async (req, res) => {
-  const { timesheetAppId } = req.params
+  const { leaveAppId } = req.params
   const data = await getTsApp(timesheetAppId)
   if (!data) {
     return res.sendStatus(404)
   }
-  data.isApproved = true
+  data.status = 1
   if (
-    isAdmin(req.user.possitionPermissionId) ||
-    isEditor(req.user.possitionPermissionId)
+    isAdmin(req.user.positionPermissionId) ||
+    isEditor(req.user.positionPermissionId)
   ) {
-    data.isApproved = true
     updateTsApp(data)
     const timesheet = await getTimesheetUserday(data.userId, data.requiredDate)
     timesheet.startTime = data.startTime ? data.startTime : timesheet.startTime
     timesheet.endTime = data.endTime ? data.endTime : timesheet.endTime
     updateTimesheet(data.userId, timesheet)
-    return res.send({ message: 'Approved successfully.' })
+    return res.send({ message: 'Successfully.' })
   }
-  if (isProjectManager(req.user.possitionPermissionId)) {
+  if (isProjectManager(req.user.positionPermissionId)) {
     const projectlist = await getManagerProjectList(req.user.id)
     const timsheetList = await getAllTsAppProjectlist(
       0,
@@ -47,8 +46,8 @@ module.exports = async (req, res) => {
         ? data.startTime
         : timesheet.startTime
       timesheet.endTime = data.endTime ? data.endTime : timesheet.endTime
-      await updateTimesheet(data.userId, timesheet)
-      return res.send({ message: 'Approved successfully.' })
+      await updateTimesheet(timesheet)
+      return res.send({ message: 'Successfully.' })
     }
   }
   return res.sendStatus(403)

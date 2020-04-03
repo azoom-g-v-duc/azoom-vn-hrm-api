@@ -8,7 +8,8 @@ export const timeSheet = {
   userId: '',
   startTime: '',
   endTime: '',
-  checkeddate: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss'),
+  leaveTypeId: '',
+  checkedDate: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss'),
   isCorrect: false
 }
 
@@ -16,12 +17,12 @@ export const invaildTimesheet = data => {
   return true
 }
 
-export const setTimesheetId = () => {
-  return date.format(new Date(), 'YYYYMMDD')
+export const setTimesheetId = tmsDate => {
+  return date.format(new Date(tmsDate), 'YYYYMMDD')
 }
 
 export const savetimeSheet = async (userId, timeSheetReq) => {
-  timeSheetReq.id = setTimesheetId()
+  timeSheetReq.id = setTimesheetId(timeSheetReq.checkedDate)
   timeSheetReq.userId = userId
   const timeSheet = await getTable(process.env.DB_TABLE_TIME_SHEET)
     .doc(userId)
@@ -31,15 +32,14 @@ export const savetimeSheet = async (userId, timeSheetReq) => {
   return timeSheet
 }
 
-export const updateTimesheet = async (userId, timesheetReq) => {
-  const timeSheetId = setTimesheetId()
+export const updateTimesheet = async timesheetReq => {
   const queryData = await getTable(process.env.DB_TABLE_TIME_SHEET)
-    .doc(userId)
-    .collection(timeSheetId)
+    .doc(timesheetReq.userId)
+    .collection(timesheetReq.id)
     .get()
   queryData.docs.map(item =>
     getTable(process.env.DB_TABLE_TIME_SHEET)
-      .doc(userId)
+      .doc(timesheetReq.userId)
       .collection(item.id)
       .doc(item.id)
       .update(timesheetReq)
@@ -58,13 +58,14 @@ const checkTimesheetdoc = async userId => {
   }
 }
 
-export const getTimesheetUserday = async (userId, day) => {
+export const getTimesheetUserday = async (userId, tmsDate) => {
   if (!checkTimesheetdoc(userId)) {
     return ''
   }
+  console.log(setTimesheetId(tmsDate))
   const queryData = await getTable(process.env.DB_TABLE_TIME_SHEET)
     .doc(userId)
-    .collection(setTimesheetId(date.format(new Date(day), 'YYYYMMDD')))
+    .collection(setTimesheetId(tmsDate))
     .get()
-  return !queryData.empty ? queryData.docs[0].data() : ''
+  return (await queryData.empty) ? '' : queryData.docs[0].data()
 }

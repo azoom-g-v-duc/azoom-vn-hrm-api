@@ -1,7 +1,7 @@
-operationId: /projects/member/
+operationId: /projects/members/
 tags:
   - Projects
-summary: POST /member/
+summary: POST /projects/members/
 description: Add member to project
 requestBody:
   content:
@@ -11,11 +11,11 @@ requestBody:
           projectId:
             type: string
             description: Input project ID
-            example: "hr001"
+            example: "azoom-vn-hr-001"
           memberId:
             type: string
             description: Input user ID of member, who is a project participant.
-            example: "0008"
+            example: "azoom002"
           isJoining:
             type: boolean
             description: Input status joining of member. flase - not joining, true - in joining
@@ -56,13 +56,13 @@ responses:
               format: date-time
           example:
             {
-              "projectId": "azoom006979",
-              "memberId": "azoom0060839",
-              "id": "azoom006979_azoom006083920200330",
+              "projectId": "azoom-vn-hr-001",
+              "memberId": "azoom002",
+              "id": "azoom-vn-hr-001_azoom00220200401",
               "isJoining": true,
               "isActive": true,
-              "createdUserId": "azoom009",
-              "created": "2020/03/30 14:58:16",
+              "createdUserId": "azoom0019",
+              "created": "2020/04/01 15:49:59",
               "updated": "",
             }
   400:

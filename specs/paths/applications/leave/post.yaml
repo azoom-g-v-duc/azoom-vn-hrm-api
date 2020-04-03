@@ -1,0 +1,74 @@
+operationId: applications/leaves/
+tags:
+  - Applications
+summary: POST /aplications/leaves/
+description: Create new application for leave.
+requestBody:
+  content:
+    application/json:
+      schema:
+        properties:
+          requiredDates:
+            type: array
+            Item:
+              type: object
+              properties:
+                date:
+                  type: string
+                  format: date
+                leaveType:
+                  type: integer
+            description: Input required date list
+            example: [{ "date": "2020/03/30", "leaveType": "1" }]
+          requiredContent:
+            type: string
+            description: Input required content
+            example: "I want ..."
+        required:
+          - requiredDates
+          - requiredContent
+responses:
+  200:
+    description: Success
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            id:
+              type: string
+            userId:
+              type: string
+            approvalUserId:
+              type: string
+            requireDates:
+              type: array
+            requiredContent:
+              type: string
+            status:
+              type: integer
+            isActive:
+              type: boolean
+            created:
+              type: string
+              format: date-time
+            updated:
+              format: date-time
+          example:
+            {
+              "id": "azoom009323564",
+              "userId": "azoom009",
+              "approvalUserId": "",
+              "requiredDates": [{ "date": "2020/03/30", "leaveType": "1" }],
+              "requiredContent": "Cause...I want...",
+              "status": 1,
+              "isActive": true,
+              "created": "2020/03/30 15:34:03",
+              "updated": "",
+            }
+  400:
+    $ref: "#/components/responses/400"
+  401:
+    $ref: "#/components/responses/401"
+  500:
+    $ref: "#/components/responses/500"

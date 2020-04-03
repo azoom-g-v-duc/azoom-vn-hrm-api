@@ -12,8 +12,8 @@ module.exports = async (req, res) => {
   const data = _.defaultsDeep(req.body, pmReq)
   if (
     !(
-      isAdmin(req.user.possitionPermissionId) ||
-      isProjectManager(req.user.possitionPermissionId)
+      isAdmin(req.user.positionPermissionId) ||
+      isProjectManager(req.user.positionPermissionId)
     )
   ) {
     return res.sendStatus(403)
@@ -29,7 +29,7 @@ module.exports = async (req, res) => {
   }
 
   if (
-    isProjectManager(req.user.possitionPermissionId) &&
+    isProjectManager(req.user.positionPermissionId) &&
     !(await checkProjectManager(req.user.id, data.projectId))
   ) {
     return res.sendStatus(403)

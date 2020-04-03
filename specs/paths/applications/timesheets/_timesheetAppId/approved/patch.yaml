@@ -1,7 +1,7 @@
-operationId: /applications/time-sheet/{timesheetAppId}/approved/
+operationId: /applications/timesheets/{timesheetAppId}/approved/
 tags:
   - Applications
-summary: PATCH /applications/time-sheet/{timesheetAppId}/approved/
+summary: PATCH /applications/timesheets/{timesheetAppId}/approved/
 description: Approved to application
 parameters:
   - timesheetAppId: page

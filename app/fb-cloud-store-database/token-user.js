@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-import { getTable } from '@configs/database'
->>>>>>>  create spec to login and logout
 const date = require('date-and-time')
 const _ = require('lodash')
 
@@ -10,6 +6,7 @@ const firebase = require('firebase')
 const tokenUserCollection = () => {
   return firebase.firestore().collection(process.env.DB_TABLE_USER_TOKEN)
 }
+
 
 export const userToken = {
   id: '',

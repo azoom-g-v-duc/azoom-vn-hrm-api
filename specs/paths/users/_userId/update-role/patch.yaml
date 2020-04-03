@@ -29,47 +29,11 @@ responses:
         schema:
           type: object
           properties:
-            id:
+            message:
               type: string
-            userName:
-              type: string
-            firstName:
-              type: string
-            lastName:
-              type: string
-            email:
-              type: string
-            password:
-              type: string
-            birthDate:
-              type: string
-            address:
-              type: string
-            tel:
-              type: string
-            zipcode:
-              type: string
-            dateJoined:
-              type: string
-          example:
-            {
-              "id": "azoom0019",
-              "userName": "azoomvn",
-              "firstName": "azoom",
-              "lastName": "vu",
-              "email": "v.t@azoom.jp",
-              "password": "$2b$10$y2lyAS5sXc3w7dqDNSCiyOO3OtPbGUDiticgSkPjhqXb.2aQXoMES",
-              "birthDate": "1996/05/4",
-              "address": "hn-vn",
-              "tel": "096985478",
-              "zipcode": "10000",
-              "dateJoined": "2020/03/27",
-              "zipCode": "",
-              "possitionPermissionId": 3,
-              "isActive": true,
-              "created": "2020/03/30 11:39:42",
-              "updated": "",
-            }
+              description: Notification about update role.
+              example: successfully.
+          example: { "message": "successfully" }
   400:
     $ref: "#/components/responses/400"
   401:

@@ -2,16 +2,21 @@ import {
   updateTimesheet,
   savetimeSheet,
   getTimesheetUserday,
-  timeSheet as timeSheetReq
+  timeSheet
 } from '@cloudStoreDatabase/time-sheet'
 const date = require('date-and-time')
 
 module.exports = async (req, res) => {
-  timeSheetReq.endTime = date.format(new Date(), 'HH:mm')
-  if (await getTimesheetUserday(req.user.id, new Date())) {
-    await updateTimesheet(req.user, { endTime: timeSheetReq.endTime })
+  const timeSheetReq = await getTimesheetUserday(req.user.id, new Date())
+  console.log(await timeSheetReq)
+
+  if (await timeSheetReq) {
+    timeSheetReq.endTime = date.format(new Date(), 'HH:mm')
+    await updateTimesheet(timeSheetReq)
   } else {
-    savetimeSheet(req.user, timeSheetReq)
+    timeSheet.checkedDate = new Date()
+    timeSheet.endTime = date.format(new Date(), 'HH:mm')
+    savetimeSheet(req.user.id, timeSheet)
   }
   return res.send({ message: 'Checkin successfully.' })
 }
