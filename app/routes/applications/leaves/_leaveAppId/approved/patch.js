@@ -5,7 +5,7 @@ import {
 } from '@cloudStoreDatabase/leave-application'
 import {
   updateTimesheet,
-  getTimesheetUserday,
+  getTimesheetUserdate,
   saveTimesheet,
   timesheet
 } from '@cloudStoreDatabase/time-sheet'
@@ -54,11 +54,12 @@ const udpateLeaveToTimesheet = async (userId, dateList) => {
   console.log(dateList)
   dateList.forEach(async element => {
     console.log(element.date)
-    const data = await getTimesheetUserday(userId, element.date)
+    const data = await getTimesheetUserdate(userId, element.date)
     if (!(await data)) {
-      timeSheet.checkedDate = element.date
-      timeSheet.leaveTypeId = element.leaveType
-      saveTimesheet(userId, timeSheet)
+      timesheet.checkedDate = element.date
+      timesheet.leaveTypeId = element.leaveType
+      console.log(timesheet)
+      saveTimesheet(userId, timesheet)
     }
     data.checkedDate = element.date
     data.leaveTypeId = element.leaveType

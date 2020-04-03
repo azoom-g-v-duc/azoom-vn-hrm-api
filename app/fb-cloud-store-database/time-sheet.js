@@ -24,12 +24,13 @@ export const setTimesheetId = tmsDate => {
 export const saveTimesheet = async (userId, timesheetReq) => {
   timesheetReq.id = setTimesheetId(timesheetReq.checkedDate)
   timesheetReq.userId = userId
-  const timesheet = await getTable(process.env.DB_TABLE_TIME_SHEET)
+  const result = await getTable(process.env.DB_TABLE_TIME_SHEET)
     .doc(userId)
     .collection(timesheetReq.id)
     .doc(timesheetReq.id)
     .set(timesheetReq)
-  return timeSheet
+  console.log(await result)
+  return result
 }
 
 export const updateTimesheet = async timesheetReq => {
@@ -58,7 +59,7 @@ const checkTimesheetdoc = async userId => {
   }
 }
 
-export const getTimesheetUserday = async (userId, tmsDate) => {
+export const getTimesheetUserdate = async (userId, tmsDate) => {
   if (!checkTimesheetdoc(userId)) {
     return ''
   }

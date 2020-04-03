@@ -5,7 +5,7 @@ import {
 } from '@cloudStoreDatabase/timesheet-application'
 import {
   updateTimesheet,
-  getTimesheetUserday
+  getTimesheetUserdate
 } from '@cloudStoreDatabase/time-sheet'
 
 import { isProjectManager, isAdmin, isEditor } from '@helpers/check-rule'
@@ -23,7 +23,7 @@ module.exports = async (req, res) => {
     isEditor(req.user.positionPermissionId)
   ) {
     updateTsApp(data)
-    const timesheet = await getTimesheetUserday(data.userId, data.requiredDate)
+    const timesheet = await getTimesheetUserdate(data.userId, data.requiredDate)
     timesheet.startTime = data.startTime ? data.startTime : timesheet.startTime
     timesheet.endTime = data.endTime ? data.endTime : timesheet.endTime
     updateTimesheet(data.userId, timesheet)
@@ -42,7 +42,7 @@ module.exports = async (req, res) => {
     )
     if (timsheetList.find(item => (item.id = data.id))) {
       updateTsApp(data)
-      const timesheet = await getTimesheetUserday(
+      const timesheet = await getTimesheetUserdate(
         data.userId,
         data.requiredDate
       )

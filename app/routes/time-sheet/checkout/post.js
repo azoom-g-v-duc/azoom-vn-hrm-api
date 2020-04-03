@@ -1,13 +1,13 @@
 import {
   updateTimesheet,
   saveTimesheet,
-  getTimesheetUserday,
+  getTimesheetUserdate,
   timesheet
 } from '@cloudStoreDatabase/time-sheet'
 const date = require('date-and-time')
 
 module.exports = async (req, res) => {
-  const result = await getTimesheetUserday(req.user.id, new Date())
+  const result = await getTimesheetUserdate(req.user.id, new Date())
 
   if (await result) {
     result.endTime = date.format(new Date(), 'HH:mm')
