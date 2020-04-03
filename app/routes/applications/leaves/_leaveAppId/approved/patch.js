@@ -1,12 +1,13 @@
 import {
   updateLeaveApp,
+  getAllLeaveAppUserList,
   getLeaveApp
 } from '@cloudStoreDatabase/leave-application'
 import {
   updateTimesheet,
   getTimesheetUserday,
-  savetimeSheet,
-  timeSheet
+  saveTimesheet,
+  timesheet
 } from '@cloudStoreDatabase/time-sheet'
 
 import { isProjectManager, isAdmin, isEditor } from '@helpers/check-rule'
@@ -31,10 +32,14 @@ module.exports = async (req, res) => {
   }
   if (isProjectManager(req.user.positionPermissionId)) {
     const projectlist = await getManagerProjectList(req.user.id)
-    const timsheetList = await getAllTsAppProjectlist(
+    const memberList = await getProjectIdMemberList(
+      projectlist.map(item => item.id)
+    )
+
+    const timsheetList = await getAllLeaveAppUserList(
       0,
       '',
-      projectlist.map(item => item.id)
+      memberList.map(item => item.id)
     )
     if (timsheetList.find(item => (item.id = data.id))) {
       updateLeaveApp(data)
@@ -53,7 +58,7 @@ const udpateLeaveToTimesheet = async (userId, dateList) => {
     if (!(await data)) {
       timeSheet.checkedDate = element.date
       timeSheet.leaveTypeId = element.leaveType
-      savetimeSheet(userId, timeSheet)
+      saveTimesheet(userId, timeSheet)
     }
     data.checkedDate = element.date
     data.leaveTypeId = element.leaveType

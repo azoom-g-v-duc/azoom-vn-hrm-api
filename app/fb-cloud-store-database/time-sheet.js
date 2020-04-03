@@ -3,7 +3,7 @@ import { getTable } from '@configs/database'
 const date = require('date-and-time')
 const _ = require('lodash')
 
-export const timeSheet = {
+export const timesheet = {
   id: '',
   userId: '',
   startTime: '',
@@ -21,14 +21,14 @@ export const setTimesheetId = tmsDate => {
   return date.format(new Date(tmsDate), 'YYYYMMDD')
 }
 
-export const savetimeSheet = async (userId, timeSheetReq) => {
-  timeSheetReq.id = setTimesheetId(timeSheetReq.checkedDate)
-  timeSheetReq.userId = userId
-  const timeSheet = await getTable(process.env.DB_TABLE_TIME_SHEET)
+export const saveTimesheet = async (userId, timesheetReq) => {
+  timesheetReq.id = setTimesheetId(timesheetReq.checkedDate)
+  timesheetReq.userId = userId
+  const timesheet = await getTable(process.env.DB_TABLE_TIME_SHEET)
     .doc(userId)
-    .collection(timeSheetReq.id)
-    .doc(timeSheetReq.id)
-    .set(timeSheetReq)
+    .collection(timesheetReq.id)
+    .doc(timesheetReq.id)
+    .set(timesheetReq)
   return timeSheet
 }
 
@@ -49,9 +49,9 @@ export const updateTimesheet = async timesheetReq => {
 
 const checkTimesheetdoc = async userId => {
   try {
-    const timeSheetId = setTimesheetId(userId)
+    const timesheetId = setTimesheetId(userId)
     const query = await getTable(process.env.DB_TABLE_TIME_SHEET).get()
-    const result = query.docs.find(doc => (doc.id = timeSheetId))
+    const result = query.docs.find(doc => (doc.id = timesheetId))
     return result ? true : false
   } catch {
     return ''

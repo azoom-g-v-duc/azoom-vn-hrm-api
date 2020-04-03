@@ -1,7 +1,7 @@
 import {
   updateTsApp,
   getTsApp,
-  getAllTsAppProjectlist
+  getAllTsAppUserList
 } from '@cloudStoreDatabase/timesheet-application'
 import {
   updateTimesheet,
@@ -13,7 +13,7 @@ import { getManagerProjectList } from '@cloudStoreDatabase/project'
 
 module.exports = async (req, res) => {
   const { leaveAppId } = req.params
-  const data = await getTsApp(timesheetAppId)
+  const data = await getTsApp(leaveAppId)
   if (!data) {
     return res.sendStatus(404)
   }
@@ -31,10 +31,14 @@ module.exports = async (req, res) => {
   }
   if (isProjectManager(req.user.positionPermissionId)) {
     const projectlist = await getManagerProjectList(req.user.id)
-    const timsheetList = await getAllTsAppProjectlist(
+    const memberList = await getProjectIdMemberList(
+      projectlist.map(item => item.id)
+    )
+
+    const timsheetList = await getAllTsAppUserList(
       0,
       '',
-      projectlist.map(item => item.id)
+      memberList.map(item => item.id)
     )
     if (timsheetList.find(item => (item.id = data.id))) {
       updateTsApp(data)

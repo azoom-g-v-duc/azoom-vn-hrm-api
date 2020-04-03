@@ -1,7 +1,7 @@
 import {
   updateTsApp,
   getTsApp,
-  getAllTsAppProjectlist
+  getAllTsAppUserList
 } from '@cloudStoreDatabase/timesheet-application'
 
 import { isProjectManager, isAdmin, isEditor } from '@helpers/check-rule'
@@ -23,7 +23,7 @@ module.exports = async (req, res) => {
   }
   if (isProjectManager(req.user.positionPermissionId)) {
     const projectlist = await getManagerProjectList(req.user.id)
-    const timsheetList = await getAllTsAppProjectlist(
+    const timsheetList = await getAllTsAppUserList(
       0,
       '',
       projectlist.map(item => item.id)

@@ -75,3 +75,10 @@ export const UpdateProjectMember = async data => {
     .set(data)
   return data
 }
+
+export const getProjectIdMemberList = async projectIdList => {
+  const queryData = await getTable(process.env.DB_TABLE_PROJECT)
+    .where('projectId', 'in', projectIdList)
+    .get()
+  return queryData.empty ? [] : queryData.docs.map(doc => doc.data())
+}
