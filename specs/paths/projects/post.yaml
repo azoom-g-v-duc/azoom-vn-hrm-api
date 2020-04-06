@@ -1,4 +1,4 @@
-operationId: /projects/
+operationId: projects.create
 tags:
   - Projects
 summary: POST /projects/

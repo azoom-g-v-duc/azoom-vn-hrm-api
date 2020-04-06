@@ -1,4 +1,4 @@
-operationId: /projects/members/
+operationId: projects.createMember.
 tags:
   - Projects
 summary: POST /projects/members/
@@ -16,19 +16,24 @@ requestBody:
             type: string
             description: Input user ID of member, who is a project participant.
             example: "azoom002"
-          isJoining:
-            type: boolean
-            description: Input status joining of member. flase - not joining, true - in joining
-            example: true
-          managerId:
-            type: string
-            description: Input ID of project manager.
-            example: "azoom0069"
+          joiningProcess:
+            type: object
+            properties:
+              position:
+                type: integer
+                description: 1- mamager of project, 2- member of project
+              startDate:
+                type: string
+                format: date-time
+                description: Date of participation in the project
+              endDate:
+                type: string
+                format: date-time
+                description: Date leaving the project
         required:
           - projectId
           - memberId
-          - isJoining
-          - managerId
+          - joiningProcess
 responses:
   200:
     description: Success
@@ -43,7 +48,7 @@ responses:
               type: string
             memberId:
               type: string
-            isJoining:
+            joiningProcess:
               type: boolean
             createdUserId:
               type: string
@@ -59,7 +64,8 @@ responses:
               "projectId": "azoom-vn-hr-001",
               "memberId": "azoom002",
               "id": "azoom-vn-hr-001_azoom00220200401",
-              "isJoining": true,
+              "joiningProcess":
+                [{ "position": 1, "start": "2020/04/01 15:49:59", "end": "" }],
               "isActive": true,
               "createdUserId": "azoom0019",
               "created": "2020/04/01 15:49:59",

@@ -79,7 +79,7 @@ export const UpdateProjectMember = async data => {
 export const getProjectListOfManagerId = async managerId => {
   const queryData = await projectMemberCollection()
     .where('memberId', '==', managerId)
-    .where('joiningStatus.positionScore', '==', 1)
+    .where('joiningProcess.position', '==', 1)
     .get()
   return queryData.empty ? [] : queryData.docs.map(doc => doc.data())
 }

@@ -1,13 +1,20 @@
-operationId: /applications/timesheets/{timesheetAppId}/approved/
+operationId: timesheetsApplications.approvedOrReject
 tags:
   - Applications
-summary: PATCH /applications/timesheets/{timesheetAppId}/approved/
-description: Approved to application
+summary: PATCH /applications/timesheets/{timesheetAppId}/{isApproved}/
+description: Approved or reject to application 
 parameters:
   - timesheetAppId: page
     in: path
     description: Timesheet application ID
     example: azoom0019
+    schema:
+      type: string
+  - isApproved: page
+    in: path
+    description: is approved. False- reject application. True- approved application
+    example: true
+    default: flase
     schema:
       type: string
 responses:
