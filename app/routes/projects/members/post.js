@@ -16,7 +16,6 @@ module.exports = async (req, res) => {
   if (!(await project)) {
     return res.sendStatus(400)
   }
-  console.log(isAdmin(req.user.positionPermissionId))
   if (
     isAdmin(req.user.positionPermissionId) ||
     (isProjectManager(req.user.positionPermissionId) &&
