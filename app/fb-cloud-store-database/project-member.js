@@ -90,3 +90,19 @@ export const getMemberOfProjectList = async projectList => {
     .get()
   return queryData.empty ? [] : queryData.docs.map(doc => doc.data())
 }
+
+export const getIdProjectMember = async (projectId, memberId) => {
+  const queryData = await projectMemberCollection()
+    .where('projectId', '==', projectId)
+    .where('memberId', '==', memberId)
+    .get()
+  return queryData.empty ? '' : queryData.docs[0].data()
+}
+
+export const UpdateProjectMember = async data => {
+  data.id = setProjectMemberId(data.projectId, data.memberId)
+  await projectMemberCollection()
+    .doc(data.id)
+    .set(data)
+  return data
+}

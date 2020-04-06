@@ -47,3 +47,14 @@ exports.oneToOne = (leftList, leftKey, rightList, rightKey, as) => {
     delete left[leftKey]
   })
 }
+export const leaveType = {
+  p: 1,
+  np: 1,
+  nk: 0,
+  k: -1,
+  q: 0,
+  l: 1,
+  c: 1,
+  t: 0,
+  b: 0
+}
