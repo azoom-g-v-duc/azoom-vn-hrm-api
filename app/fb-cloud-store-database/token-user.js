@@ -7,7 +7,6 @@ const tokenUserCollection = () => {
   return firebase.firestore().collection(process.env.DB_TABLE_USER_TOKEN)
 }
 
-
 export const userToken = {
   id: '',
   userId: '',

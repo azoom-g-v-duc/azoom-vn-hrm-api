@@ -11,6 +11,7 @@ import statuses from 'statuses'
 // import { errorHandlerMiddleware } from '@middleware/error-handler'
 
 import { authMiddleware } from '@middleware/auth'
+
 firebase.initializeApp({
   apiKey: process.env.FIRE_BASE_API_KEY,
   authDomain: process.env.FIRE_BASE_AUTH_DOMAIN,

@@ -1,7 +1,10 @@
-import { getTable } from '@configs/database'
-
 const date = require('date-and-time')
 const _ = require('lodash')
+const firebase = require('firebase')
+
+const timesheetCollection = () => {
+  return firebase.firestore().collection(process.env.DB_TABLE_TIME_SHEET)
+}
 
 export const timesheet = {
   id: '',
@@ -21,39 +24,31 @@ export const setTimesheetId = tmsDate => {
   return date.format(new Date(tmsDate), 'YYYYMMDD')
 }
 
-export const saveTimesheet = async (userId, timesheetReq) => {
+export const saveTimesheet = async timesheetReq => {
   timesheetReq.id = setTimesheetId(timesheetReq.checkedDate)
-  timesheetReq.userId = userId
-  const result = await getTable(process.env.DB_TABLE_TIME_SHEET)
-    .doc(userId)
+  await timesheetCollection()
+    .doc(timesheetReq.userId)
     .collection(timesheetReq.id)
     .doc(timesheetReq.id)
     .set(timesheetReq)
-  console.log(await result)
-  return result
+  return timesheetReq
 }
 
 export const updateTimesheet = async timesheetReq => {
-  const queryData = await getTable(process.env.DB_TABLE_TIME_SHEET)
+  await timesheetCollection()
     .doc(timesheetReq.userId)
     .collection(timesheetReq.id)
-    .get()
-  queryData.docs.map(item =>
-    getTable(process.env.DB_TABLE_TIME_SHEET)
-      .doc(timesheetReq.userId)
-      .collection(item.id)
-      .doc(item.id)
-      .update(timesheetReq)
-  )
-  return !queryData.empty
+    .doc(timesheetReq.id)
+    .update(timesheetReq)
+  return timesheetReq
 }
 
 const checkTimesheetdoc = async userId => {
   try {
-    const timesheetId = setTimesheetId(userId)
-    const query = await getTable(process.env.DB_TABLE_TIME_SHEET).get()
-    const result = query.docs.find(doc => (doc.id = timesheetId))
-    return result ? true : false
+    const query = await timesheetCollection().get()
+    return query.docs.find(doc => (doc.id = setTimesheetId(userId)))
+      ? true
+      : false
   } catch {
     return ''
   }
@@ -63,8 +58,7 @@ export const getTimesheetUserdate = async (userId, tmsDate) => {
   if (!checkTimesheetdoc(userId)) {
     return ''
   }
-  console.log(setTimesheetId(tmsDate))
-  const queryData = await getTable(process.env.DB_TABLE_TIME_SHEET)
+  const queryData = await timesheetCollection()
     .doc(userId)
     .collection(setTimesheetId(tmsDate))
     .get()
