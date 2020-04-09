@@ -27,7 +27,9 @@
     "nnn-router": "^1.0.5",
     "npm": "^6.14.2",
     "redis": "^3.0.2",
-    "statuses": "^1.5.0"
+    "statuses": "^1.5.0",
+    "node-mocks-http": "^1.7.6",
+    "to-case": "^2.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.4",
@@ -39,8 +41,9 @@
     "@routes": "./routes",
     "@middleware": "./middleware",
     "@helpers": "./helpers",
-    "@utils": "./utils",
-    "@cloudStoreDatabase": "fb-cloud-store-database"
+    "@util": "./util",
+    "@cloudStoreDatabase": "fb-cloud-store-database",
+    "@constants": "./constants"
   },
   "engines": {
     "node": "10"
