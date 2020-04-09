@@ -1,6 +1,6 @@
 import express from 'express'
 import { verifyToken } from '@helpers/jwt-helper'
-import { getToken } from '@cloudStoreDatabase/token-user'
+import getToken from '@routes/authentications/tokens/get'
 
 const router = new express.Router()
 

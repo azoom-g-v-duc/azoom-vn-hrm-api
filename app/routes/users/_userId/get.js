@@ -1,11 +1,11 @@
 import _ from 'lodash/fp'
 
-const { getUserCollection } = require('@root/database')
+const { userCollection } = require('@root/database')
 
-module.exports = async (req, res) => {
+export default async (req, res) => {
   try {
     const { userId } = req.params
-    const user = await getUserCollection().doc(userId).get()
+    const user = await userCollection().doc(userId).get()
     if (!user.exists) return res.sendStatus(404)
 
     return res.send(_.omit(['password'], user.data()))

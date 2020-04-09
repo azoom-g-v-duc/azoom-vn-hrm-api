@@ -1,21 +1,40 @@
-import {
-  updateTimesheet,
-  saveTimesheet,
-  getTimesheetUserdate,
-  timesheet as timesheetReq
-} from '@cloudStoreDatabase/timesheet'
-const date = require('date-and-time')
+import { execute } from '@root/util.js'
+import checkExistTimesheet from '@routes/timesheets/get.js'
+import saveTimesheet from '@routes/timesheets/post.js'
+import updateTimesheet from '@routes/timesheets/patch.js'
+import date from 'date-and-time'
 
-module.exports = async (req, res) => {
-  const data = await getTimesheetUserdate(req.user.id, new Date())
-  if (await data) {
-    data.startTime = date.format(new Date(), 'HH:mm')
-    updateTimesheet(data)
-  } else {
-    timesheetReq.userId = req.user.id
-    timesheetReq.checkedDate = new Date()
-    timesheetReq.startTime = date.format(new Date(), 'HH:mm')
-    saveTimesheet(timesheetReq)
+export default async (req, res) => {
+  try {
+    const { userId } = req.body
+    const checkedInRecord = await execute(checkExistTimesheet, { params: { userId, time: new Date() } })
+
+    if (!checkedInRecord) {
+      const newTimesheet = {
+        userId,
+        checkedDate: date.format(new Date(), 'YYYY-MM-DD'),
+        startTime: date.format(new Date(), 'HH:mm'),
+        endTime: '',
+        created: new Date(),
+        updated: '',
+      }
+
+      if (await execute(saveTimesheet, { body: newTimesheet })) {
+        return res.send({ message: 'Checkin successfully.' })
+      }
+    } else if (!checkedInRecord.startTime) {
+      const updateProperties = {
+        startTime: date.format(new Date(), 'HH:mm'),
+        updated: new Date(),
+      }
+
+      if (await execute(updateTimesheet, { body: updateProperties, query: { timesheetAppId: checkedInRecord.id } })) {
+        return res.send({ message: 'Checkin successfully.' })
+      }
+    } else {
+      return res.send({ message: `You checked in at ${checkedInRecord.startTime}` })
+    }
+  } catch (error) {
+    return res.status(500).send({ message: 'Server internal error.' })
   }
-  return res.send({ message: 'Checkin successfully.' })
 }

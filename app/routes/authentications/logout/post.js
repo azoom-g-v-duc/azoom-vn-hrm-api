@@ -1,7 +1,7 @@
 import {
   destroyToken,
   destroyALLTokenOfUser
-} from '@cloudStoreDatabase/token-user'
+} from '@helpers/token-user'
 
 export default async function (req, res) {
   const { isAll = false } = req.query

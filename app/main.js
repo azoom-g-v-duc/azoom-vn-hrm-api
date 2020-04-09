@@ -5,21 +5,10 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import expressOpenApiMiddleware from 'openapi-express-middleware'
 import swaggerFile from './openapi.json'
-const firebase = require('firebase')
 
 import statuses from 'statuses'
 
 import { authMiddleware } from '@middleware/auth'
-
-firebase.initializeApp({
-  apiKey: process.env.FIRE_BASE_API_KEY,
-  authDomain: process.env.FIRE_BASE_AUTH_DOMAIN,
-  databaseURL: process.env.FIRE_BASE_DATABASE_URL,
-  projectId: process.env.FIRE_BASE_PROJECT_ID,
-  storageBucket: process.env.FIRE_BASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIRE_BASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIRE_BASE_APP_ID
-})
 
 express.response.sendStatus = function (statusCode) {
   const body = { message: statuses[statusCode] || String(statusCode) }
