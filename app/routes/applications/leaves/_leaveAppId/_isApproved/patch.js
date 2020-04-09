@@ -1,22 +1,12 @@
-import {
-  updateLeaveApp,
-  getLeaveApp
-} from '@cloudStoreDatabase/leave-application'
-import {
-  updateTimesheet,
-  getTimesheetUserdate,
-  saveTimesheet,
-  timesheet
-} from '@cloudStoreDatabase/timesheet'
+import { updateLeaveApp, getLeaveApp } from '@cloudStoreDatabase/leave-application'
+import { updateTimesheet, getTimesheetUserdate, saveTimesheet, timesheet } from '@cloudStoreDatabase/timesheet'
 import { isAdmin, isEditor } from '@helpers/check-rule'
-import {
-  getMemberOfProjectList,
-  getProjectListOfManagerId
-} from '@cloudStoreDatabase/project-member'
+import { getMemberOfProjectList, getProjectListOfManagerId } from '@cloudStoreDatabase/project-member'
 const { status } = '@constants/index'
 
 module.exports = async (req, res) => {
   const { leaveAppId, isApproved = false } = req.params
+
   const data = await getLeaveApp(leaveAppId)
   if (!data) {
     return res.sendStatus(404)
@@ -46,17 +36,15 @@ module.exports = async (req, res) => {
 
 const checkPermissionOfManage = async (managerId, memberId) => {
   const projectlist = await getProjectListOfManagerId(managerId)
-  const memberList = await getMemberOfProjectList(
-    projectlist.map(item => item.id)
-  )
-  if (memberList.find(item => (item.memberId = memberId))) {
+  const memberList = await getMemberOfProjectList(projectlist.map((item) => item.id))
+  if (memberList.find((item) => (item.memberId = memberId))) {
     return true
   }
   return false
 }
 
 const updateLeaveToTimesheet = async (userId, dateList) => {
-  dateList.forEach(async element => {
+  dateList.forEach(async (element) => {
     const data = await getTimesheetUserdate(userId, element.date)
     if (!(await data)) {
       timesheet.userId = userId

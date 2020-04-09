@@ -1,17 +1,8 @@
-import {
-  updateTsApp,
-  getTsApp
-} from '@cloudStoreDatabase/timesheet-application'
-import {
-  updateTimesheet,
-  getTimesheetUserdate
-} from '@cloudStoreDatabase/timesheet'
+import { updateTsApp, getTsApp } from '@cloudStoreDatabase/timesheet-application'
+import { updateTimesheet, getTimesheetUserdate } from '@cloudStoreDatabase/timesheet'
 
 import { isAdmin, isEditor } from '@helpers/check-rule'
-import {
-  getMemberOfProjectList,
-  getProjectListOfManagerId
-} from '@cloudStoreDatabase/project-member'
+import { getMemberOfProjectList, getProjectListOfManagerId } from '@cloudStoreDatabase/project-member'
 const { status } = '@constants/index'
 
 module.exports = async (req, res) => {
@@ -45,16 +36,14 @@ module.exports = async (req, res) => {
 
 const checkPermissionOfManage = async (managerId, memberId) => {
   const projectlist = await getProjectListOfManagerId(managerId)
-  const memberList = await getMemberOfProjectList(
-    projectlist.map(item => item.id)
-  )
-  if (memberList.find(item => (item.memberId = memberId))) {
+  const memberList = await getMemberOfProjectList(projectlist.map((item) => item.id))
+  if (memberList.find((item) => (item.memberId = memberId))) {
     return true
   }
   return false
 }
 
-const updateTmsDateApp = async data => {
+const updateTmsDateApp = async (data) => {
   const result = await getTimesheetUserdate(data.userId, data.requiredDate)
   if (result) {
     result.startTime = data.startTime ? data.startTime : timesheet.startTime
