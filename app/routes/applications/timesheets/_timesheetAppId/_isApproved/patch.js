@@ -12,7 +12,7 @@ import {
   getMemberOfProjectList,
   getProjectListOfManagerId
 } from '@cloudStoreDatabase/project-member'
-const { status } = '@constants/index'
+import { status } from '@root/constants/index'
 
 module.exports = async (req, res) => {
   const { leaveAppId, isApproved = false } = req.params

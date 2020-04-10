@@ -1,5 +1,4 @@
 import _ from 'lodash/fp'
-
 const { userCollection } = require('@root/database')
 
 export default async (req, res) => {

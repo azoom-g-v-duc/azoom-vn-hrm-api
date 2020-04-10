@@ -8,7 +8,8 @@ import getTimesheetUserDate from '@routes/timesheets/get'
 import saveTimesheet from '@routes/timesheets/post'
 import updateTimesheet from '@routes/timesheets/patch'
 import { timesheet } from '@constants/models'
-import { newApprovalUser, calculateApprovalPoints } from '@helpers/users/initNewApprovalUser'
+import  newApprovalUser  from '@helpers/users/initNewApprovalUser'
+import calculateApprovalPoints from 'helpers/calculateApprovalPoints'
 
 module.exports = async (req, res) => {
   const { leaveAppId, isApproved = false } = req.params
@@ -17,7 +18,7 @@ module.exports = async (req, res) => {
   if (!existedLeaveApplication) {
     return res.sendStatus(404)
   }
-  if (existedLeaveApplication.status !== status.isPending) {
+  if (existedLeaveApplication.status !== status.inPending) {
     return res.status(400).send({ message: 'This Application has been already approved/rejected.' })
   }
 
@@ -26,7 +27,7 @@ module.exports = async (req, res) => {
     isAdmin(req.user.positionPermissionId) ||
     isEditor(req.user.positionPermissionId)
   ) {
-    const isUserEditedBefore = exitTimesheetApp.approvalUsers.find((approvalUser) => approvalUser.userId === userId)
+    const isUserEditedBefore = existedLeaveApplication.approvalUsers.find((approvalUser) => approvalUser.userId === userId)
     if (isUserEditedBefore)
       return res.status(400).send({ message: 'This Application has been already approved/rejected.' })
 
@@ -39,7 +40,7 @@ module.exports = async (req, res) => {
       return res.send({ message: 'Successfully.' })
     }
 
-    data.approvalCosre = calculateApprovalPoints(data.approvalUsers)
+    existedLeaveApplication.approvalCosre = calculateApprovalPoints(data.approvalUsers)
 
     if (existedLeaveApplication.approvalCosre >= process.env.POSITION_ADMIN) {
       existedLeaveApplication.status = status.approved

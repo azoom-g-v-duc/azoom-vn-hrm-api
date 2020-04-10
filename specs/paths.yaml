@@ -17,9 +17,9 @@
 /applications/leaves/{leaveAppId}/{isApproved}/:
   patch:
     $ref: paths/applications/leaves/_leaveAppId/_isApproved/patch.yaml
-/applications/timesheets/{timesheetAppId}/{isApproved}/:
+/applications/timesheets/{timesheetAppId}/:
   patch:
-    $ref: paths/applications/timesheets/_timesheetAppId/_isApproved/patch.yaml
+    $ref: paths/applications/timesheets/_timesheetAppId/patch.yaml
 /users/:
   post:
     $ref: paths/users/post.yaml

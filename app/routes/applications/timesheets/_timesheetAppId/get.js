@@ -4,7 +4,6 @@ module.exports = async (req, res) => {
   try {
     const { timesheetAppId } = req.params
     const existTimesheetApplication = await timesheetApplicationCollection().doc(timesheetAppId).get()
-
     if (existTimesheetApplication.exists) {
       res.send(existTimesheetApplication.data())
     } else {

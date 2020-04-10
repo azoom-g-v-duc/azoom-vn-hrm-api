@@ -2,7 +2,7 @@ import { execute } from '@root/util.js'
 import { timesheetApplicationCollection } from '@root/database'
 import getExistTimesheetApp from '@routes/applications/timesheets/_timesheetAppId/get.js'
 import checkPermissionOfManager from '@helpers/project/checkPermissionOfManager'
-import { newApprovalUser } from '@helpers/users/initNewApprovalUser'
+import  newApprovalUser  from '@helpers/users/initNewApprovalUser'
 import getRole from '@helpers/users/getRole'
 import firebase from 'firebase'
 
@@ -22,10 +22,10 @@ export default async function (req, res) {
   const permissionToEdit = await checkPermissionOfManager(userId, exitTimesheetApp.userId)
 
   if (permissionToEdit || role === 'admin' || role === 'editor') {
-    const newApprovalUser = await newApprovalUser(userId, isApproved)
+    const approvalUser = await newApprovalUser(userId, isApproved)
     const updateTimesheetApp = {
       updated: new Date(),
-      approvalUsers: firebase.firestore.FieldValue.arrayUnion(newApprovalUser),
+      approvalUsers: firebase.firestore.FieldValue.arrayUnion(approvalUser),
     }
     await timesheetApplicationCollection().doc(timesheetAppId).update(updateTimesheetApp)
     res.send({ message: isApproved ? 'Approved successfully.' : 'Rejected successfully.' })

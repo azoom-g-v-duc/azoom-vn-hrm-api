@@ -8,7 +8,6 @@ export default async (req, res) => {
   try {
     const { userId } = req.body
     const existedTimesheet = await execute(getExistTimesheet, { params: { userId, time: new Date() } })
-
     if (!existedTimesheet) {
       const newTimesheet = {
         userId,

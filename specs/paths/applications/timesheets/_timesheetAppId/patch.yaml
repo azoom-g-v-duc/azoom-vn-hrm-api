@@ -1,8 +1,7 @@
 operationId: timesheetsApplications.approvedOrReject
 tags:
   - Applications
-summary: PATCH /applications/timesheets/{timesheetAppId}/{isApproved}/
-description: Approved or reject to application
+summary: Approved or reject a check in/out application
 parameters:
   - name: timesheetAppId
     in: path
@@ -11,12 +10,23 @@ parameters:
     schema:
       type: string
   - name: isApproved
-    in: path
+    in: query
     description: is approved. False- reject application. True- approved application
     example: true
     default: flase
     schema:
-      type: string
+      type: boolean
+requestBody:
+  content:
+    application/json:
+      schema:
+        properties:
+          userId:
+            type: string
+            description: Id of user who want to approve this application
+            example: AZ-19
+        required:
+          - userId
 responses:
   200:
     description: Success
