@@ -8,7 +8,6 @@ import swaggerFile from './openapi.json'
 const firebase = require('firebase')
 
 import statuses from 'statuses'
-// import { errorHandlerMiddleware } from '@middleware/error-handler'
 
 import { authMiddleware } from '@middleware/auth'
 

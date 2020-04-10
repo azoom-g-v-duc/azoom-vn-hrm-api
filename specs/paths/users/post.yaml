@@ -1,7 +1,8 @@
 operationId: users.create
 tags:
   - Users
-summary: Create a new user
+summary: POST /users/
+description: Create new account to employee.
 requestBody:
   content:
     application/json:

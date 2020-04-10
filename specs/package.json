@@ -4,9 +4,9 @@
   "author": "Azoom",
   "license": "The Unlicense",
   "scripts": {
-    "build:openapi": "rm -rf openapi.json && multi-file-swagger openapi.yaml > openapi.json",
-    "build:doc": "redoc-cli bundle ./openapi.json -o openapi.html",
-    "serve": "yarn build:openapi && redoc-cli serve ./openapi.json"
+    "build:openapi": "rm -rf openapi.json && multi-file-swagger openapi.yaml > ../app/openapi.json",
+    "build:doc": "redoc-cli bundle ../app/openapi.json -o ../app/openapi.html",
+    "serve": "yarn build:openapi && redoc-cli serve ../app/openapi.json"
   },
   "devDependencies": {
     "multi-file-swagger": "^2.3.0",
