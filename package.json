@@ -8,8 +8,11 @@
   "scripts": {
     "build:doc": "yarn docker:build:specs:image && yarn build:doc:docker",
     "dev": "cd app && yarn dev",
-    "setup:app": "cd app && yarn",
-    "setup:spec": "cd specs && yarn serve"
+    "specs": "yarn specs:build && redoc-cli serve ./app/openapi.json",
+    "specs:build": "cd specs && multi-file-swagger openapi.yaml > ../app/openapi.json"
   },
-  "dependencies": {}
+  "dependencies": {
+    "multi-file-swagger": "^2.3.0",
+    "redoc-cli": "^0.9.7"
+  }
 }
