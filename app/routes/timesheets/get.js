@@ -1,20 +1,42 @@
 import { timesheetCollection } from '@root/database'
-import initTimesheetId from '@helpers/timesheets/initTimesheetId'
+import { endOfDay, format, parse, startOfMonth, lastDayOfMonth } from 'date-fns/fp'
 
 export default async (req, res) => {
   try {
-    const { userId, time = new Date() } = req.params
-    if (!userId) {
-      const timesheetsSnapshot = await timesheetCollection().get()
-      res.send(timesheetsSnapshot.docs.map(timesheet => timesheet.data()))
-    } else {
-      const timesheetId = initTimesheetId(userId, time)
-      const timesheetsSnapshot = await timesheetCollection().doc(timesheetId).get()
-      const docsToday = timesheetsSnapshot.exists ? timesheetsSnapshot.data() : null
+    const { userIds = '', time, startDate, endDate } = req.query
 
-      res.send(docsToday)
+    let query = timesheetCollection()
+    if (userIds.length) {
+      const ids = userIds.split(/,/)
+      query = query.where('userId', 'in', ids)
     }
-  } catch (error) {
-    res.status(500).send({ message: 'Error when save timesheet to firebase.' })
+    if (time) {
+      query = query.where('checkedDate', '>=', parse(new Date(), 'yyyy-MM-dd'), time)
+    } else if (startDate || endDate) {
+      if (startDate) {
+        query = query.where('checkedDate', '>=', parse(new Date(), 'yyyy-MM-dd', startDate))
+      }
+      if (endDate) {
+        const end = endOfDay(parse(new Date(), 'yyyy-MM-dd', endDate))
+        query = query.where('checkedDate', '<=', end)
+      }
+    } else {
+      query = query
+        .where('checkedDate', '>=', startOfMonth(new Date()))
+        .where('checkedDate', '<=', lastDayOfMonth(new Date()))
+    }
+    const results = await query.get()
+
+    res.send(
+      results.docs
+        .map((doc) => doc.data())
+        .reduce((docs, doc) => {
+          const checkedDate = doc.checkedDate.toDate()
+          doc.checkedDate = format('yyyy-MM-dd', checkedDate)
+          return [...docs, doc]
+        }, [])
+    )
+  } catch {
+    res.status(500).send({ message: 'Error when get timesheets from firebase.' })
   }
 }

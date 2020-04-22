@@ -11,7 +11,7 @@ export default async (req, res) => {
     if (!existedTimesheet) {
       const newTimesheet = {
         userId,
-        checkedDate: date.format(new Date(), 'YYYY-MM-DD'),
+        checkedDate: new Date(),
         startTime: '',
         endTime: date.format(new Date(), 'HH:mm'),
         created: new Date(),

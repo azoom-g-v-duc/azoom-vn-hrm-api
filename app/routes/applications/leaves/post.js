@@ -1,22 +1,22 @@
-const { execute, getDatesBetween } = require('@root/util')
+const { execute } = require('@root/util')
 const saveLeaveApplication = require('@routes/applications/leaves/put.js')
-const date = require('date-and-time')
 const constants = require('@root/constants/index')
+import { parse, eachDayOfInterval, format } from 'date-fns/fp'
 
 module.exports = async (req, res) => {
   const { startDate, endDate, leaveTypeId, userId, requiredContent } = req.body
 
-  const requiredDates = getDatesBetween({
-    startDate: date.parse(startDate, 'YYYY/MM/DD'),
-    endDate: date.parse(endDate, 'YYYY/MM/DD'),
-  })
+  const requiredDates = eachDayOfInterval({
+    start: parse(new Date(), 'yyyy/MM/dd', startDate),
+    end: parse(new Date(), 'yyyy/MM/dd', endDate),
+  }).map((date) => format('yyyy/MM/dd', date))
   const data = {
     id: setId(userId),
     userId,
     requiredDates,
     requiredContent,
     leaveTypeId,
-    createdDate: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss'),
+    createdDate: new Date(),
     status: constants.status.inPending,
     isActive: true,
   }
@@ -24,5 +24,5 @@ module.exports = async (req, res) => {
   return res.send(result)
 }
 const setId = (id) => {
-  return id + date.format(new Date(), 'YYYYMMDDHHMMSS')
+  return id + format('yyyyMMddHHmmss', new Date())
 }

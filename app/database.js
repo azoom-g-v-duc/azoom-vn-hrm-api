@@ -21,7 +21,7 @@ export const projectCollection = () => {
 }
 
 export const timesheetCollection = () => {
-  return fireStore.collection(process.env.DB_TABLE_TIME_SHEET_APPLICATION)
+  return fireStore.collection(process.env.DB_TABLE_TIME_SHEET)
 }
 
 export const userCollection = () => {

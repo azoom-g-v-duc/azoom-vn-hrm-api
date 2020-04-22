@@ -1,6 +1,7 @@
 const { camel, snake } = require('to-case')
 const _ = require('lodash/fp')
 const httpMocks = require('node-mocks-http')
+import date from 'date-and-time'
 
 exports.camelize = (obj) => {
   return Object.entries(obj).reduce((o, [key, value]) => {
@@ -46,15 +47,4 @@ exports.oneToOne = (leftList, leftKey, rightList, rightKey, as) => {
     left[as] = right || null
     delete left[leftKey]
   })
-}
-
-exports.getDatesBetween = ({ startDate, endDate }) => {
-  dates = []
-
-  while (startDate <= endDate) {
-    dates.push(date.format(startDate, 'YYYY/MM/DD'))
-    startDate = date.addDays(startDate, 1)
-  }
-
-  return dates
 }

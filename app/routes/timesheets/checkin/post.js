@@ -12,7 +12,7 @@ export default async (req, res) => {
     if (!checkedInRecord) {
       const newTimesheet = {
         userId,
-        checkedDate: date.format(new Date(), 'YYYY-MM-DD'),
+        checkedDate: new Date(),
         startTime: date.format(new Date(), 'HH:mm'),
         endTime: '',
         created: new Date(),
