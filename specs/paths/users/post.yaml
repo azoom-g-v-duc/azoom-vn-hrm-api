@@ -1,69 +1,82 @@
 operationId: users.create
 tags:
   - Users
-summary: POST /users/
-description: Create new account to employee.
+summary: Create a new user
 requestBody:
   content:
     application/json:
       schema:
         properties:
-          id:
+          userId: 
             type: string
-            description: Input ID
-            example: "azoom0019"
-          userName:
-            type: string
-            description: Input userName
-            example: "azoomvn"
-          fullName:
-            type: string
-            description: Input fullName.
-            example: "nguyen van A"
-          email:
-            type: string
-            description: Input email of company.
-            example: "v.t@azoom.jp"
-          password:
-            type: string
-            format: password
-            description: Input password.
-            example: "fgh23456@"
-          birthDate:
-            type: string
-            format: date
-            description: Input birthDate.
-            example: "1996/05/4"
-          address:
-            type: string
-            description: Input address.
-            example: "hn-vn"
-          tel:
-            type: string
-            description: Input telephone.
-            example: "096985478"
-          zipcode:
-            type: string
-            description: Input zipcode.
-            example: "10000"
-          position:
-            type: string
-            description: Input position.
-            example: Dev
-          contractTypeId:
-            type: integer
-            description: Input contract type ID
-            example: 0
+            description: Id of user who want to create new user
+            example: "AZ-19"
+          user:
+            type: object
+            description: Object user will be created
+            properties:
+              id:
+                type: string
+                description: Input ID
+                example: "AZ-20"
+              userName:
+                type: string
+                description: Input userName
+                example: "azoomvn"
+              fullName:
+                type: string
+                description: Input fullName.
+                example: "nguyen van A"
+              email:
+                type: string
+                description: Input email of company.
+                example: "v.t@azoom.jp"
+              password:
+                type: string
+                format: password
+                description: Input password.
+                example: "fgh23456@"
+              dateOfBirth:
+                type: string
+                format: date
+                description: Input dateOfBirth.
+                example: "1996/05/4"
+              address:
+                type: string
+                description: Input address.
+                example: "hn-vn"
+              tel:
+                type: string
+                description: Input telephone.
+                example: "096985478"
+              zipcode:
+                type: string
+                description: Input zipcode.
+                example: "10000"
+              position:
+                type: string
+                description: Input zipcode.
+                example: "editor"
+              positionPermissionId:
+                type: number
+                description: Input positionPermission.
+                example: 1
+              contractTypeId:
+                type: integer
+                description: Input contract type ID
+                example: 0
+            required:
+              - id
+              - userName
+              - fullName
+              - email
+              - password
+              - position
+              - positionPermissionId
+              - contractTypeId
         required:
-          - id
-          - userName
-          - fullName
-          - birthDate
-          - email
-          - password
-          - tel
-          - position
-          - contractTypeId
+          - userId
+          - user
 responses:
   200:
     description: Success
@@ -80,9 +93,7 @@ responses:
               type: string
             email:
               type: string
-            password:
-              type: string
-            birthDate:
+            dateOfBirth:
               type: string
               format: date
             address:
@@ -91,39 +102,30 @@ responses:
               type: string
             zipcode:
               type: string
-            position:
+            position: 
               type: string
+            positionPermissionId:
+              type: number
             contractTypeId:
               type: integer
             totalPaidLeaveDate:
               type: integer
-            isActive:
-              type: boolean
-            created:
-              type: string
-              format: date-time
-            updated:
-              format: date-time
           example:
             {
-              "id": "azoom0019",
+              "id": "AZ-20",
               "userName": "azoomvn",
               "fullName": "nguyen van A",
               "email": "v.t@azoom.jp",
-              "password": "$2b$10$baCkjc4F8fXRmhR6Qqlbb.FuR.baC1H4BtEKs59BFexToO0nF9SVC",
-              "birthDate": "1996/05/4",
+              "dateOfBirth": "1996/05/4",
               "address": "hn-vn",
               "tel": "096985478",
               "zipcode": "10000",
-              "position": "Dev",
               "contractTypeId": 0,
               "zipCode": "",
               "totalPaidLeaveDate": 0,
               "contractType": 0,
-              "positionPermissionId": 1,
-              "isActive": true,
-              "created": "2020/04/01 15:45:52",
-              "updated": "",
+              "position": "editor",
+              "positionPermissionId": 1
             }
   400:
     $ref: "#/components/responses/400"

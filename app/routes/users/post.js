@@ -1,25 +1,40 @@
-import { isAdmin, isEditor } from '@helpers/check-rule'
-import { execute } from '@root/util'
-import saveUser from '@routes/users/put'
+import _ from 'lodash/fp'
 import bcrypt from 'bcrypt'
+import { userCollection } from '@root/database'
+import getRole from '@helpers/users/getRole.js'
 import getUserByEmail from '@routes/users/_email/get'
 import getUserById from '@routes/users/_userId/get'
 
-const _ = require('lodash/fp')
-import date from 'date-and-time'
+export default async (req, res) => {
+  const { userId, user } = req.body
 
-module.exports = async (req, res) => {
-  if (isAdmin(req.user.positionPermissionId) || isEditor(req.user.positionPermissionId)) {
-    const data = _.defaultsDeep(defaultUser, req.body)
-    if (await isValidUser(data.id, data.email)) {
-      data.password = bcrypt.hashSync(data.password, 10)
-      await execute(saveUser, { body: data })
-      return res.send(data)
-    }
-    return res.sendStatus(400)
+  const role = await getRole(userId)
+  if (role !== 'admin' && role !== 'editor') return res.sendStatus(403)
+
+  if(!isValidUser) return res.sendStatus(400)
+
+  const defaultUser = {
+    id: '',
+    userName: '',
+    fullName: '',
+    email: '',
+    password: '',
+    birthDate: '',
+    address: '',
+    tel: '',
+    zipCode: '',
+    totalPaidLeaveDate: 0,
+    contractType: 0,
+    position: 'Dev',
+    positionPermissionId: 1,
+    isActive: true,
+    created: new Date(),
+    updated: ''
   }
+  const newUser = { ...defaultUser, ...user, password: bcrypt.hashSync(user.password, 10)}
 
-  return res.sendStatus(403)
+  await userCollection().doc(newUser.id).set(newUser)
+  res.send(user)
 }
 
 const isValidUser = async (id, email) => {
@@ -28,21 +43,3 @@ const isValidUser = async (id, email) => {
   return isValidId & isValidEmail
 }
 
-const defaultUser = {
-  id: '',
-  userName: '',
-  fullName: '',
-  email: '',
-  password: '',
-  birthDate: '',
-  address: '',
-  tel: '',
-  zipCode: '',
-  totalPaidLeaveDate: 0,
-  contractType: 0,
-  position: 'Dev',
-  positionPermissionId: 1,
-  isActive: true,
-  created: date.format(new Date(), 'YYYY/MM/DD HH:mm:ss'),
-  updated: '',
-}
