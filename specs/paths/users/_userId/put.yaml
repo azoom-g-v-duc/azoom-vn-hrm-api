@@ -1,10 +1,9 @@
 operationId: users.update
 tags:
   - Users
-summary: PUT /users/{userId}/
-description: Updated role for user
+summary: Updated info of an user
 parameters:
-  - userId: page
+  - name: userId
     in: path
     description: User ID
     example: azoom0019
@@ -15,57 +14,54 @@ requestBody:
     application/json:
       schema:
         properties:
-          userName:
+          userId:
             type: string
-            description: Input userName
-            example: "azoomvn"
-          fullName:
-            type: string
-            description: Input fullName.
-            example: "nguyen van A"
-          email:
-            type: string
-            description: Input email of company.
-            example: "v.t@azoom.jp"
-          password:
-            type: string
-            format: password
-            description: Input password.
-            example: "fgh23456@"
-          birthDate:
-            type: string
-            format: date
-            description: Input birthDate.
-            example: "1996/05/4"
-          address:
-            type: string
-            description: Input address.
-            example: "hn-vn"
-          tel:
-            type: string
-            description: Input telephone.
-            example: "096985478"
-          zipcode:
-            type: string
-            description: Input zipcode.
-            example: "10000"
-          position:
-            type: string
-            description: Input position.
-            example: Dev
-          contractTypeId:
-            type: integer
-            description: Input contract type ID
-            example: 0
+            description: Id of user who want to update info
+            example: "AZ-19"
+          user:
+            type: object
+            description: Object user will be updated
+            properties:
+              userName:
+                type: string
+                description: Input userName
+                example: "azoomvn"
+              fullName:
+                type: string
+                description: Input fullName.
+                example: "nguyen van A"
+              email:
+                type: string
+                description: Input email of company.
+                example: "v.t@azoom.jp"
+              dateOfBirth:
+                type: string
+                format: date
+                description: Input dateOfBirth.
+                example: "1996/05/4"
+              address:
+                type: string
+                description: Input address.
+                example: "hn-vn"
+              tel:
+                type: string
+                description: Input telephone.
+                example: "096985478"
+              zipcode:
+                type: string
+                description: Input zipcode.
+                example: "10000"
+              position:
+                type: string
+                description: Input position.
+                example: Dev
+              contractTypeId:
+                type: integer
+                description: Input contract type ID
+                example: 0
         required:
-          - userName
-          - fullName
-          - birthDate
-          - email
-          - password
-          - tel
-          - position
-          - contractTypeId
+          - userId
+          - user
 responses:
   200:
     description: Success
@@ -82,9 +78,7 @@ responses:
               type: string
             email:
               type: string
-            password:
-              type: string
-            birthDate:
+            dateOfBirth:
               type: string
               format: date
             address:
@@ -97,35 +91,20 @@ responses:
               type: string
             contractTypeId:
               type: integer
-            totalPaidLeaveDate:
-              type: integer
-            isActive:
-              type: boolean
-            created:
-              type: string
-              format: date-time
-            updated:
-              format: date-time
           example:
             {
               "id": "azoom0019",
               "userName": "azoomvn",
               "fullName": "nguyen van A",
               "email": "v.t@azoom.jp",
-              "password": "$2b$10$baCkjc4F8fXRmhR6Qqlbb.FuR.baC1H4BtEKs59BFexToO0nF9SVC",
-              "birthDate": "1996/05/4",
+              "dateOfBirth": "1996/05/4",
               "address": "hn-vn",
               "tel": "096985478",
               "zipcode": "10000",
               "position": "Dev",
               "contractTypeId": 0,
               "zipCode": "",
-              "totalPaidLeaveDate": 0,
-              "contractType": 0,
-              "positionPermissionId": 3,
-              "isActive": true,
-              "created": "2020/04/01 15:45:52",
-              "updated": "",
+              "contractType": 0
             }
   400:
     $ref: "#/components/responses/400"
