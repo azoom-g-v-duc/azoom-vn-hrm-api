@@ -28,6 +28,9 @@
 /users/{userId}/position-permission/:
   patch:
     $ref: paths/users/_userId/position-permission/patch.yaml
+/users/{userId}/deactive/:
+  patch:
+    $ref: paths/users/_userId/deactive/patch.yaml
 /users/{userId}/:
   put:
     $ref: paths/users/_userId/put.yaml

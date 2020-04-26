@@ -9,7 +9,7 @@ import saveTimesheet from '@routes/timesheets/post'
 import updateTimesheet from '@routes/timesheets/patch'
 import { timesheet } from '@constants/models'
 import  newApprovalUser  from '@helpers/users/initNewApprovalUser'
-import calculateApprovalPoints from 'helpers/calculateApprovalPoints'
+import calculateApprovalPoints from '@helpers/calculateApprovalPoints'
 
 module.exports = async (req, res) => {
   const { leaveAppId, isApproved = false } = req.params

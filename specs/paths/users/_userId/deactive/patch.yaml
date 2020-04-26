@@ -1,0 +1,41 @@
+operationId: users.deactive
+tags:
+  - Users
+summary: Deactive an user
+parameters:
+  - name: userId
+    in: path
+    description: User ID
+    example: AZ-20
+    schema:
+      type: string
+requestBody:
+  content:
+    application/json:
+      schema:
+        properties:
+          userId:
+            type: string
+            description: ID of user who want to deactive
+            example: "AZ-19"
+        required:
+          - userId
+responses:
+  200:
+    description: Success
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              description: Notification about update role.
+              example: successfully.
+          example: { "message": "successfully" }
+  400:
+    $ref: "#/components/responses/400"
+  401:
+    $ref: "#/components/responses/401"
+  500:
+    $ref: "#/components/responses/500"
