@@ -14,18 +14,18 @@ export default async (req, res) => {
         userId,
         checkedDate: date.format(new Date(), 'YYYY-MM-DD'),
         startTime: date.format(new Date(), 'HH:mm'),
-        endTime: "",
+        endTime: '',
         created: new Date(),
-        updated: ""
+        updated: '',
       }
 
       if (await execute(saveTimesheet, { body: newTimesheet })) {
         return res.send({ message: 'Checkin successfully.' })
       }
-    } else if(!checkedInRecord.startTime) {
+    } else if (!checkedInRecord.startTime) {
       const updateProperties = {
         startTime: date.format(new Date(), 'HH:mm'),
-        updated: new Date()
+        updated: new Date(),
       }
 
       if (await execute(updateTimesheet, { body: updateProperties, query: { timesheetAppId: checkedInRecord.id } })) {
@@ -34,7 +34,7 @@ export default async (req, res) => {
     } else {
       return res.send({ message: `You checked in at ${checkedInRecord.startTime}` })
     }
-  } catch(error) {
+  } catch (error) {
     return res.status(500).send({ message: 'Server internal error.' })
   }
 }

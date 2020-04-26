@@ -9,7 +9,7 @@ export default async (req, res) => {
 
     await timesheetCollection().doc(saveTimesheet.id).set(saveTimesheet)
     res.send(saveTimesheet)
-  } catch(error) {    
-    res.status(500).send({ message: "Error when save timesheet to firebase."})
+  } catch (error) {
+    res.status(500).send({ message: 'Error when save timesheet to firebase.' })
   }
 }

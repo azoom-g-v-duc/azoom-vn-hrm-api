@@ -4,7 +4,6 @@ import initTimesheetId from '@helpers/timesheets/initTimesheetId'
 export default async (req, res) => {
   try {
     const { userId, time = new Date() } = req.params
-    
     if (!userId) {
       const timesheetsSnapshot = await timesheetCollection().get()
       res.send(timesheetsSnapshot.docs.map(timesheet => timesheet.data()))

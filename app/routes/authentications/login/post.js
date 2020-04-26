@@ -1,11 +1,9 @@
 import { generateToken } from '@helpers/jwt-helper'
-import { saveToken } from '@cloudStoreDatabase/token-user'
-import { getUser } from '@cloudStoreDatabase/user'
 
 export default async function (req, res) {
   try {
     const { email, password } = req.body
-    const user = await getUser(email, password)
+    const user = await getUserByEmailAndPassword(email, password)
 
     if (user) {
       const accessToken = await generateToken(
@@ -20,4 +18,26 @@ export default async function (req, res) {
   } catch (error) {
     return res.sendStatus(500)
   }
+}
+
+const saveToken = async (userId, tokenCode) => {
+  const id = userId + Date.now()
+  const data = _.defaultsDeep(
+    { id: id, userId: userId, tokenCode: tokenCode },
+    userToken
+  )
+  const tokenUser = await tokenUserCollection()
+    .doc(id)
+    .set(data)
+  return tokenUser
+}
+
+const getUserByEmailAndPassword = async (email, password) => {
+  const queryData = await userCollection()
+    .where('email', '==', email)
+    .get()
+  const userDoc = queryData.docs.find(doc =>
+    bcrypt.compare(password, doc.data().password)
+  )
+  return userDoc ? userDoc.data() : ''
 }

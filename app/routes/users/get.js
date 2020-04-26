@@ -8,7 +8,7 @@ export default async (req, res) => {
 
   const role = await getRole(userId)
   if (role !== 'admin' && role !== 'editor') return res.sendStatus(403)
-  
+
   // TODO: page, limit must be greater than 0  (handle be OpenAPI)
   // TODO: remove 2 line parser below when openAPI is applied
   page = parseInt(page)
@@ -19,14 +19,14 @@ export default async (req, res) => {
     const users = await userCollection().orderBy('created').limit(limit).get()
     if (users.empty) return res.send([])
 
-    return res.send(users.docs.map(user => _.omit(['password'], user.data() )))
+    return res.send(users.docs.map((user) => _.omit(['password'], user.data())))
   } else {
     const ignoreUsers = await userCollection().orderBy('created').limit(totalIgnoreUser).get()
     if (ignoreUsers.empty) return res.send([])
-  
+
     const lastIgnoreUser = ignoreUsers.docs[ignoreUsers.docs.length - 1].data()
     const users = await userCollection().orderBy('created').startAfter(lastIgnoreUser.created).limit(limit).get()
 
-    return res.send(users.docs.map(user => _.omit(['password'], user.data() )))
+    return res.send(users.docs.map((user) => _.omit(['password'], user.data())))
   }
 }

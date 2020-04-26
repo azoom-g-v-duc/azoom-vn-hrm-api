@@ -1,7 +1,8 @@
 const { projectCollection } = require('@root/database')
 
-module.exports = async (req, res) => {
+export default async (req, res) => {
   const { managerId, memberId, status } = req.query
+
   let query = projectCollection().where('isActive', '==', true)
   if (memberId) {
     query = query.where('members', 'array-contains', { id: memberId })
