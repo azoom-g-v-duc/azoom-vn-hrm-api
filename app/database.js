@@ -12,39 +12,26 @@ firebase.initializeApp({
 
 const fireStore = firebase.firestore()
 
-<<<<<<< HEAD
 export const leaveApplicationCollection = () => {
   return fireStore.collection(process.env.DB_TABLE_LEAVE_APPLICATION)
-=======
-export const timesheetApplicationCollection = () => {
-  return fireStore.collection(process.env.DB_TABLE_TIME_SHEET_APPLICATION)
->>>>>>> :+1:  Implement approve/reject timesheet application API
 }
 
 export const projectCollection = () => {
   return fireStore.collection(process.env.DB_TABLE_PROJECT)
 }
 
-<<<<<<< HEAD
 export const timesheetCollection = () => {
   return fireStore.collection(process.env.DB_TABLE_TIME_SHEET_APPLICATION)
 }
 
-=======
->>>>>>> :+1:  Implement approve/reject timesheet application API
 export const userCollection = () => {
   return fireStore.collection(process.env.DB_TABLE_USER)
 }
 
-<<<<<<< HEAD
 export const userTokenCollection = () => {
   return fireStore.collection(process.env.DB_TABLE_USER_TOKEN)
 }
 
 export const timesheetApplicationCollection = () => {
   return fireStore.collection(process.env.DB_TABLE_TIME_SHEET_APPLICATION)
-=======
-export const timesheetCollection = () => {
-  return fireStore.collection(process.env.DB_TABLE_TIME_SHEET)
->>>>>>> :+1:  Implement approve/reject timesheet application API
 }

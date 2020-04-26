@@ -1,18 +1,31 @@
 operationId: users.getList
 tags:
   - Users
-summary: GET /users/
+summary: Get all users by one by one page
 parameters:
   - name: page
     in: query
     description: Page number
     schema:
       type: integer
+      minimum: 1
   - name: limit
     in: query
     description: Limit number
     schema:
-      type: string
+      type: integer
+      minimum: 1
+requestBody:
+  content:
+    application/json:
+      schema:
+        properties:
+          userId:
+            type: string
+            description: ID of user who want to get list of users
+            example: "AZ-19"
+        required:
+          - userId
 responses:
   200:
     description: Success

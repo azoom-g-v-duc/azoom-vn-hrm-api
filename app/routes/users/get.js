@@ -1,29 +1,32 @@
+import _ from 'lodash/fp'
 import { userCollection } from '@root/database'
+import getRole from '@helpers/users/getRole.js'
 
-export const getUser = async (req, res) => {
-  const pageNumber = parseInt(req.query.pageNumber) || 0
-  const count = parseInt(req.query.count) || ''
+export default async (req, res) => {
+  let { page = 1, limit = 1 } = req.query
+  const { userId } = req.body
 
-  return res.send(await getAllUser(pageNumber, count))
-}
+  const role = await getRole(userId)
+  if (role !== 'admin' && role !== 'editor') return res.sendStatus(403)
 
-const getAllUser = async (page, number) => {
-  const result = { count: 0, data: [] }
-  const query = await userCollection().orderBy('created', 'desc')
-  const datall = await query.get()
-  result.count = datall.empty ? 0 : await datall.docs.length
-  if (!page) {
-    result.data = datall.empty ? '' : await datall.docs.map((doc) => doc.data())
-    return result
+  // TODO: page, limit must be greater than 0  (handle be OpenAPI)
+  // TODO: remove 2 line parser below when openAPI is applied
+  page = parseInt(page)
+  limit = parseInt(limit)
+  const totalIgnoreUser = (page - 1) * limit
+
+  if (totalIgnoreUser === 0) {
+    const users = await userCollection().orderBy('created').limit(limit).get()
+    if (users.empty) return res.send([])
+
+    return res.send(users.docs.map((user) => _.omit(['password'], user.data())))
+  } else {
+    const ignoreUsers = await userCollection().orderBy('created').limit(totalIgnoreUser).get()
+    if (ignoreUsers.empty) return res.send([])
+
+    const lastIgnoreUser = ignoreUsers.docs[ignoreUsers.docs.length - 1].data()
+    const users = await userCollection().orderBy('created').startAfter(lastIgnoreUser.created).limit(limit).get()
+
+    return res.send(users.docs.map((user) => _.omit(['password'], user.data())))
   }
-  if (page && number && page * number - 1 <= result.count) {
-    const queryData = await query
-      .startAt(await datall.docs[page - 1 ? (page - 1) * number : page - 1].data().created)
-      .limit(number)
-      .get()
-    result.data = queryData.empty ? '' : await queryData.docs.map((doc) => doc.data())
-    return result
-  }
-
-  return result
 }
