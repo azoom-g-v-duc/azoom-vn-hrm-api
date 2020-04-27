@@ -24,12 +24,12 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))
 app.use(
   cors({
     origin: true,
-    credential: true
+    credential: true,
   }),
   (error, req, res, next) => {
     if (error) {
       return res.status(400).json({
-        message: error.message
+        message: error.message,
       })
     }
     next()
@@ -41,7 +41,7 @@ app.use(authMiddleware)
 app.use(
   expressOpenApiMiddleware(swaggerFile, app, {
     enableBodyParser: false,
-    enableValidateRequest: false
+    enableValidateRequest: false,
   }),
   (error, req, res, next) => {
     if (error) {
@@ -61,7 +61,7 @@ app.use(
   }
 )
 
-app.listen(process.env.PORT || 8080, err => {
+app.listen(process.env.PORT || 8080, (err) => {
   if (err) {
     return console.error(err)
   }

@@ -1,0 +1,38 @@
+operationId: timesheets.download
+tags:
+  - Timesheets
+summary: GET /timesheets/downloads/
+description: Download timesheet file
+parameters:
+  - name: month
+    in: query
+    description: the month
+    schema:
+      type: integer
+  - name: year
+    in: query
+    description: the year
+    schema:
+      type: integer
+responses:
+  200:
+    description: Success
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            link:
+              type: string
+              description: The download link
+              example: "https://storage.googleapis.com/download/storage/v1/b/staging-hrm/o/timesheet_20200508_1332.xlsx?generation=1588919570844636&alt=media"
+  400:
+    $ref: "#/components/responses/400"
+  401:
+    $ref: "#/components/responses/401"
+  403:
+    $ref: "#/components/responses/403"
+  404:
+    $ref: "#/components/responses/404"
+  500:
+    $ref: "#/components/responses/500"
