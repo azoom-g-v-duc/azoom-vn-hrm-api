@@ -1,7 +1,6 @@
 const { camel, snake } = require('to-case')
 const _ = require('lodash/fp')
 const httpMocks = require('node-mocks-http')
-import date from 'date-and-time'
 
 exports.camelize = (obj) => {
   return Object.entries(obj).reduce((o, [key, value]) => {
