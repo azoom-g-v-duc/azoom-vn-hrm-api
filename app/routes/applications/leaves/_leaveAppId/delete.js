@@ -13,7 +13,7 @@ export default async (req, res) => {
 
     const role = await getRole(req.user.id)
     if (
-      status === status.inPending &&
+      status === status.pending &&
       approvalUsers.length === 0 &&
       (role === 'admin' || role === 'editor' || userId === req.user.id)
     ) {

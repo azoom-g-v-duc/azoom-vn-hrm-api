@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
     requiredContent,
     leaveTypeId,
     createdDate: new Date(),
-    status: constants.status.inPending,
+    status: constants.status.pending,
     isActive: true,
   }
   const result = await execute(saveLeaveApplication, { body: data })

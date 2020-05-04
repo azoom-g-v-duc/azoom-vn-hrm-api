@@ -18,11 +18,15 @@
   post:
     $ref: paths/applications/leaves/post.yaml
   get:
-    $ref: paths/applications/leaves/get.yaml
+    $ref: paths/applications/leaves/get.yaml   
 /applications/leaves/{leaveAppId}/:
   patch:
     $ref: paths/applications/leaves/_leaveAppId/patch.yaml
-/applications/payments/:
+  get:
+    $ref: paths/applications/leaves/_leaveAppId/get.yaml
+  delete:
+    $ref: paths/applications/leaves/_leaveAppId/delete.yaml
+/application/payments/:
   get:
     $ref: paths/applications/payments/get.yaml
   post:

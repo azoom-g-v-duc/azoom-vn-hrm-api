@@ -1,8 +1,8 @@
-operationId: leavesApplications.approveOrReject
+operationId: leavesApplications.delete
 tags:
   - Applications
-summary: PATCH /applications/leaves/{leaveAppId}/
-description: Approve or reject application
+summary: DELETE /applications/leaves/{leaveAppId}/
+description: Delete application
 parameters:
   - name: leaveAppId
     in: path
@@ -10,13 +10,6 @@ parameters:
     example: azoom0019
     schema:
       type: string
-  - name: isApproved
-    in: query
-    description: true for approve and false for reject
-    example: false
-    default: false
-    schema:
-      type: boolean    
 responses:
   200:
     description: Success
@@ -31,10 +24,10 @@ responses:
   400:
     $ref: "#/components/responses/400"
   401:
-    $ref: "#/components/responses/401" 
+    $ref: "#/components/responses/401"
   403:
-    $ref: "#/components/responses/403"
+    $ref: "#/components/responses/403"  
   404:
-    $ref: "#/components/responses/404" 
+    $ref: "#/components/responses/404"  
   500:
     $ref: "#/components/responses/500"

@@ -1,41 +1,22 @@
-operationId: leavesApplications.create
+operationId: leavesApplications.get
 tags:
   - Applications
-summary: POST /aplications/leaves/
-description: Create new application for leave.
-requestBody:
-  content:
-    application/json:
-      schema:
-        properties:
-          startDate:
-            type: string
-            description: date in format yyyy/MM/dd
-            example: 2020/04/05
-          endDate:  
-            type: string
-            description: date in format yyyy/MM/dd
-            example: 2020/04/05
-          leaveTypeId:
-            type: integer
-            description: '{ paidLeave: 1,
-                            paidLeaveMorning: 2,
-                            paidLeaveAfternoon: 3,
-                            unpaidLeaveMorning: 4,
-                            unpaidLeaveAfternoon: 5,
-                            unpaidLeave: 6,
-                            makeUpLeave: 7,
-                            makeUpLeaveMorning: 8,
-                            makeUpLeaveAfternoon: 9,
-                          }'  
-          requiredContent:
-            type: string
-            description: Input required content
-            example: "I want ..."
-        required:
-          - startDate
-          - endDate
-          - requiredContent
+summary: GET /applications/leaves/{leaveAppId}/
+description: Get application
+parameters:
+  - name: leaveAppId
+    in: path
+    description: Leave application ID
+    example: azoom0019
+    schema:
+      type: string
+  - name: isApproved
+    in: query
+    description: is approved. False- reject application. True- approved application
+    example: true
+    default: false
+    schema:
+      type: string
 responses:
   200:
     description: Success
@@ -71,13 +52,12 @@ responses:
                 example: '2020/04/05'
             leaveTypeId:
               type: integer   
-              example: 1     
+              example: 1 
             isActive:
               type: boolean
             status:
               type: integer
-              description:  '{ pending: -1, rejected: 0, approved: 1 }'
-              example: -1   
+              description:  'inPending: -1, reject: 0, approved: 1'   
             approvalCosre:
               type: integer
               description: the total of approvalPoint 
@@ -85,9 +65,12 @@ responses:
               type: date
             updated:
               type: date
+
   400:
     $ref: "#/components/responses/400"
   401:
     $ref: "#/components/responses/401"
+  404:
+    $ref: "#/components/responses/404"  
   500:
     $ref: "#/components/responses/500"
