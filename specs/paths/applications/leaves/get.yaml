@@ -28,33 +28,21 @@ responses:
               type: array
           example:
             {
-              "count": 2,
+              "count": 1,
               "data":
                 [
                   {
-                    "approvalUserId": "",
+                    "approvalUsers": [],
                     "created": "2020/04/03 07:40:46",
                     "id": "azoom001920200403070427",
                     "isActive": true,
                     "requiredContent": "I want ...",
                     "requiredDates":
-                      [{ "date": "2020/03/30", "leaveType": "1" }],
+                      ["2020/03/30"],
                     "status": -1,
                     "updated": "",
                     "userId": "azoom0019",
-                  },
-                  {
-                    "approvalUserId": "",
-                    "created": "2020/04/03 07:06:24",
-                    "id": "azoom001920200403070484",
-                    "isActive": true,
-                    "requiredContent": "I want ...",
-                    "requiredDates":
-                      [{ "date": "2020/03/30", "leaveType": "1" }],
-                    "status": 1,
-                    "updated": "",
-                    "userId": "azoom0019",
-                  },
+                  }
                 ],
             }
   400:
