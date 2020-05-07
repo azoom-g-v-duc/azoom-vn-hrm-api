@@ -27,7 +27,7 @@ responses:
           properties:
             message:
               type: string
-          example: { "message": "Successfully." }
+          example: { "message": "Rejected successfully." }
   400:
     $ref: "#/components/responses/400"
   401:

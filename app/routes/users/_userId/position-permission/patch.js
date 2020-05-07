@@ -8,8 +8,9 @@ module.exports = async (req, res) => {
     return res.sendStatus(403)
   }
   const { positionPermissionId = 4 } = req.body
-  const user = await execute(getUserById, { params: { userId } })
-  if (user) {
+  const userResponse = await execute(getUserById, { params: { userId } })
+  if (userResponse.status === 200) {
+    const user = userResponse.body
     user.positionPermissionId = positionPermissionId
     await execute(saveUser, { body: user })
     res.send(user)

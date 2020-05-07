@@ -48,6 +48,7 @@ const saveToken = async (userId, tokenCode) => {
 const getUserByEmailAndPassword = async (email, password) => {
   const queryData = await userCollection()
     .where('email', '==', email)
+    .where('isActive', '==' , true)
     .get()
   const userDoc = queryData.docs.find(doc =>
     bcrypt.compareSync(password, doc.data().password)

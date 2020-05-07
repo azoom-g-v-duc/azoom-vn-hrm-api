@@ -4,8 +4,8 @@ export default async (req, res) => {
   try {
     const project = await projectCollection().doc(projectId).get()
     if (!project.exists) return res.sendStatus(404)
-    res.send(project.data())
+    return res.send(project.data())
   } catch (error) {
-    res.sendStatus(500)
+    return res.sendStatus(500)
   }
 }

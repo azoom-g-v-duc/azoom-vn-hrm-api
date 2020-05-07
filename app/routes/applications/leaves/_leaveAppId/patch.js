@@ -14,75 +14,86 @@ import getRole from '@helpers/users/getRole'
 module.exports = async (req, res) => {
   const { leaveAppId } = req.params
   const { isApproved = false } = req.query
-  const getLeaveAppResponse = await execute(getLeaveApp, {
+  const leaveAppResponse = await execute(getLeaveApp, {
     params: { leaveAppId },
   })
-  if (getLeaveAppResponse.status !== 200) {
-    return res.sendStatus(getLeaveAppResponse.status)
+  if (leaveAppResponse.status !== 200) {
+    return res.sendStatus(leaveAppResponse.status)
   }
-  const existedLeaveApplication = getLeaveAppResponse.body
+  const existedLeaveApplication = leaveAppResponse.body
   if (existedLeaveApplication.status !== status.pending) {
     return res
       .status(400)
-      .send({ message: 'This Application has been already approved/rejected.' })
+      .send({ message: 'This application has been already approved/rejected.' })
   }
-  const role = await getRole(req.user.id)
 
+  const role = await getRole(req.user.id)
   if (
-    (await checkPermissionOfManager(
+    !(await checkPermissionOfManager(
       req.user.id,
       existedLeaveApplication.userId
-    )) ||
-    role === 'admin' ||
-    role === 'editor'
+    )) &&
+    !['admin', 'editor'].includes(role)
   ) {
-    const isUserEditedBefore = existedLeaveApplication.approvalUsers.find(
-      (approvalUser) => approvalUser.userId === userId
-    )
-    if (isUserEditedBefore)
-      return res.status(400).send({
-        message: 'This Application has been already approved/rejected.',
-      })
-
-    const approvalUser = newApprovalUser(req.user.id, isApproved)
-    existedLeaveApplication.approvalUsers.push(approvalUser)
-
-    if (!isApproved) {
-      existedLeaveApplication.status = status.rejected
-      await execute(saveLeaveApplication, { body: existedLeaveApplication })
-      return res.send({ message: 'Successfully.' })
-    }
-
-    existedLeaveApplication.approvalCosre = calculateApprovalPoints(
-      data.approvalUsers
-    )
-
-    if (existedLeaveApplication.approvalCosre >= process.env.POSITION_ADMIN) {
-      existedLeaveApplication.status = status.approved
-      updateLeaveToTimesheet(
-        existedLeaveApplication.userId,
-        existedLeaveApplication.requiredDates
-      )
-    }
-    await execute(saveLeaveApplication, { body: existedLeaveApplication })
-    return res.send({ message: 'Successfully.' })
+    return res.status(403).send({ message: 'Forbidden' })
   }
-  return res.sendStatus(403)
+
+  const isUserEditedBefore = existedLeaveApplication.approvalUsers
+    ? existedLeaveApplication.approvalUsers.find(
+        (approvalUser) => approvalUser.userId === userId
+      )
+    : false
+
+  if (isUserEditedBefore)
+    return res.status(400).send({
+      message: 'This application has been already approved/rejected.',
+    })
+
+  const approvalUser = await newApprovalUser(req.user.id, isApproved)
+  if (!existedLeaveApplication.approvalUsers) {
+    existedLeaveApplication.approvalUsers = [approvalUser]
+  } else {
+    existedLeaveApplication.approvalUsers.push(approvalUser)
+  }
+  
+  if (!isApproved) {
+    existedLeaveApplication.status = status.rejected
+    await execute(saveLeaveApplication, { body: existedLeaveApplication })
+    return res.send({ message: 'Rejected successfully.' })
+  }
+
+  existedLeaveApplication.approvalCosre = calculateApprovalPoints(
+    data.approvalUsers
+  )
+
+  if (existedLeaveApplication.approvalCosre >= process.env.POSITION_ADMIN) {
+    existedLeaveApplication.status = status.approved
+    updateLeaveToTimesheet(
+      existedLeaveApplication.userId,
+      existedLeaveApplication.requiredDates,
+      existedLeaveApplication.leaveTypeId
+    )
+  }
+  
+  await execute(saveLeaveApplication, { body: existedLeaveApplication })
+  return res.send({ message: 'Approved successfully.' })
 }
 
-const updateLeaveToTimesheet = async (userId, dateList) => {
-  dateList.forEach(async (element) => {
-    const data = await execute(getTimesheetUserDate, {
-      params: { userId, time: element.date },
+const updateLeaveToTimesheet = async (userId, dates, leaveTypeId) => {
+  dates.forEach(async (time) => {
+    const timesheetUserDateResponse = await execute(getTimesheetUserDate, {
+      params: { userId, time },
     })
-    if (!data) {
+    if (timesheetUserDateResponse.status !== 200) {
       timesheet.userId = userId
-      timesheet.checkedDate = element.date
-      timesheet.leaveTypeId = element.leaveType
+      timesheet.checkedDate = time
+      timesheet.leaveTypeId = leaveTypeId
       await execute(saveTimesheet, { body: timesheet })
+    } else {
+      const data = timesheetUserDateResponse.body
+      data.checkedDate = time
+      data.leaveTypeId = leaveTypeId
+      await execute(updateTimesheet, { body: data })
     }
-    data.checkedDate = element.date
-    data.leaveTypeId = element.leaveType
-    await execute(updateTimesheet, { body: data })
   })
 }

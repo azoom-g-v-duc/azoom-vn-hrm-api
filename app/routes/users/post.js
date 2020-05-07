@@ -11,7 +11,7 @@ export default async (req, res) => {
   const role = await getRole(userId)
   if (role !== 'admin' && role !== 'editor') return res.sendStatus(403)
 
-  if(!isValidUser(user.id, user.email)) return res.sendStatus(400)
+  if (!isValidUser(user.id, user.email)) return res.sendStatus(400)
 
   const defaultUser = {
     id: '',
@@ -29,16 +29,22 @@ export default async (req, res) => {
     positionPermissionId: 1,
     isActive: true,
     created: new Date(),
-    updated: ''
+    updated: '',
   }
-  const newUser = { ...defaultUser, ...user, password: bcrypt.hashSync(user.password, 10)}
+  const newUser = {
+    ...defaultUser,
+    ...user,
+    password: bcrypt.hashSync(user.password, 10),
+  }
 
   await userCollection().doc(newUser.id).set(newUser)
   res.send(user)
 }
 
 const isValidUser = async (id, email) => {
-  const isValidId = (await execute(getUserById, { params: { userId: id } })) ? false : true
-  const isValidEmail = (await execute(getUserByEmail, { params: { email } })) ? false : true
+  const isValidId =
+    (await execute(getUserById, { params: { userId: id } })).status !== 200
+  const isValidEmail =
+    (await execute(getUserByEmail, { params: { email } })).status !== 200
   return isValidId & isValidEmail
 }

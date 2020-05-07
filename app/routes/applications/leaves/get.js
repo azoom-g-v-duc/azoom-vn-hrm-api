@@ -6,15 +6,18 @@ import getRole from '@helpers/users/getRole'
 module.exports = async (req, res) => {
   const pageNumber = parseInt(req.query.pageNumber) || 0
   const count = parseInt(req.query.count) || ''
+
   const role = await getRole(req.user.id)
-  if (role === 'admin' || role === 'editor') {
-    return res.send(await getAllLeaveAppOfUserList(pageNumber, count, []))
+  if (['admin', 'editor'].includes(role)) {
+    return res.send(await getLeaveAppOfUsers(pageNumber, count))
   }
+
   if (role === 'project manager') {
-    const projectlist = await execute(getProject, {
+    const projectResponse = await execute(getProject, {
       query: { managerId: req.user.id },
     })
-    const memberList = projectlist.reduce((members, project) => {
+    const projects = projectResponse.status === 200 ? projectResponse.body : []
+    const members = projects.reduce((members, project) => {
       return {
         ...members,
         ...project.members.filter((member) => member.isActive),
@@ -22,37 +25,36 @@ module.exports = async (req, res) => {
     }, [])
 
     return res.send(
-      await getAllLeaveAppOfUserList(
+      await getLeaveAppOfUsers(
         pageNumber,
         count,
-        memberList.map((item) => item.id)
+        members.map((item) => item.id)
       )
     )
   }
-  return res.send(
-    await getAllLeaveAppOfUserList(pageNumber, count, [req.user.id])
-  )
+  return res.send(await getLeaveAppOfUsers(pageNumber, count, [req.user.id]))
 }
 
-const getAllLeaveAppOfUserList = async (page, number, userIdList) => {
-  
+const getLeaveAppOfUsers = async (page, number, userIds = []) => {
   const result = { count: 0, data: [] }
   let query = await leaveApplicationCollection().orderBy('created', 'desc')
-  if (userIdList && userIdList.length) {
-    query = query.where('userId', 'in', userIdList)
+  if (userIds && userIds.length) {
+    query = query.where('userId', 'in', userIds)
   }
-  const datall = await query.get()
-  
-  result.count = datall.empty ? 0 : await datall.docs.length
+  const leaveAppSnapshot = await query.get()
+  result.count = leaveAppSnapshot.empty ? 0 : await leaveAppSnapshot.docs.length
   if (!page) {
-    result.data = datall.empty ? '' : await datall.docs.map((doc) => doc.data())
+    result.data = leaveAppSnapshot.empty
+      ? ''
+      : await leaveAppSnapshot.docs.map((doc) => doc.data())
     return result
   }
   if (page && number && page * number - 1 <= result.count) {
     const queryData = await query
       .startAt(
-        await datall.docs[page - 1 ? (page - 1) * number : page - 1].data()
-          .created
+        await leaveAppSnapshot.docs[
+          page - 1 ? (page - 1) * number : page - 1
+        ].data().created
       )
       .limit(number)
       .get()

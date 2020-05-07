@@ -4,7 +4,7 @@ import * as constants from '@root/constants/index'
 import { parse, eachDayOfInterval, format } from 'date-fns/fp'
 
 module.exports = async (req, res) => {
-  const { startDate, endDate, leaveTypeId, userId, requiredContent } = req.body
+  const { startDate, endDate, leaveTypeId, userId = req.user.id, requiredContent } = req.body
 
   const requiredDates = eachDayOfInterval({
     start: parse(new Date(), 'yyyy/MM/dd', startDate),
@@ -21,7 +21,10 @@ module.exports = async (req, res) => {
     isActive: true,
   }
   const result = await execute(saveLeaveApplication, { body: data })
-  return res.send(result)
+  if (result.status !== 200) {
+    return res.send(result.status)
+  }
+  return res.send(result.body)
 }
 const setId = (id) => {
   return id + format('yyyyMMddHHmmss', new Date())
