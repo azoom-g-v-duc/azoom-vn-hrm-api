@@ -12,9 +12,9 @@ parameters:
       type: string
   - name: isApproved
     in: query
-    description: true for approve and false for reject
-    example: false
-    default: false
+    description: 1 for approve and 0 for reject
+    example: 0
+    default: 0
     schema:
       type: boolean    
 responses:

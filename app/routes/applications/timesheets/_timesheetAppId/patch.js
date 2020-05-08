@@ -11,7 +11,7 @@ import firebase from 'firebase'
 export default async function(req, res) {
   const { timesheetAppId } = req.params
   const userId = req.user.id
-  const { isApproved = false } = req.query
+  const { isApproved = 0 } = req.query
   const responseTimesheet = await execute(getExistTimesheetApp, { params: { timesheetAppId } } )
 
   if (responseTimesheet.status === 404 || !responseTimesheet.body) return res.sendStatus(404)
@@ -21,7 +21,7 @@ export default async function(req, res) {
   }
 
   const isUserEditedBefore = exitTimesheetApp.approvalUsers.find(approvalUser => approvalUser.userId === userId)
-  if (isUserEditedBefore) return res.status(400).send( { message: "This Application has been already approved/rejected." } )
+  if (isUserEditedBefore) return res.status(400).send( { message: "You have already approved/rejected this application." } )
 
   const role = await getRole(userId)
   const permissionToEdit = await checkPermissionOfManager(userId, exitTimesheetApp.userId)
