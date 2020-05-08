@@ -1,6 +1,6 @@
 import { timesheetApplicationCollection } from '@root/database'
 import { format } from 'date-fns/fp'
-import { timesheetAppIdPrefix } from '@constants/index.js'
+import { timesheetAppIdPrefix } from '@root/constants.js'
 import initNewId from '@helpers/initNewId'
 
 export default async (req, res) => {

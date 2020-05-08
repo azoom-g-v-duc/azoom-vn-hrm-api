@@ -1,15 +1,23 @@
 import { execute } from '@root/util'
-import { status } from '@constants/index'
+import { applicationStatus } from '@root/constants.js'
 import getLeaveApp from '@routes/applications/leaves/_leaveAppId/get'
 import saveLeaveApplication from '@routes/applications/leaves/put'
 import checkPermissionOfManager from '@helpers/project/checkPermissionOfManager'
 import getTimesheetUserDate from '@routes/timesheets/get'
 import saveTimesheet from '@routes/timesheets/post'
 import updateTimesheet from '@routes/timesheets/patch'
-import { timesheet } from '@constants/models'
 import newApprovalUser from '@helpers/users/initNewApprovalUser'
 import calculateApprovalPoints from '@helpers/calculateApprovalPoints'
 import getRole from '@helpers/users/getRole'
+const timesheet = {
+  id: '',
+  userId: '',
+  startTime: '',
+  endTime: '',
+  leaveTypeId: '',
+  checkedDate: format('yyyy/MM/dd', new Date()),
+  isCorrect: false,
+}
 
 module.exports = async (req, res) => {
   const { leaveAppId } = req.params
@@ -21,7 +29,7 @@ module.exports = async (req, res) => {
     return res.sendStatus(getLeaveAppResponse.status)
   }
   const existedLeaveApplication = getLeaveAppResponse.body
-  if (existedLeaveApplication.status !== status.pending) {
+  if (existedLeaveApplication.status !== applicationStatus.pending) {
     return res
       .status(400)
       .send({ message: 'This Application has been already approved/rejected.' })
@@ -48,7 +56,7 @@ module.exports = async (req, res) => {
     existedLeaveApplication.approvalUsers.push(approvalUser)
 
     if (!isApproved) {
-      existedLeaveApplication.status = status.rejected
+      existedLeaveApplication.status = applicationStatus.rejected
       await execute(saveLeaveApplication, { body: existedLeaveApplication })
       return res.send({ message: 'Successfully.' })
     }
@@ -58,7 +66,7 @@ module.exports = async (req, res) => {
     )
 
     if (existedLeaveApplication.approvalCosre >= process.env.POSITION_ADMIN) {
-      existedLeaveApplication.status = status.approved
+      existedLeaveApplication.status = applicationStatus.approved
       updateLeaveToTimesheet(
         existedLeaveApplication.userId,
         existedLeaveApplication.requiredDates
@@ -69,7 +77,7 @@ module.exports = async (req, res) => {
   }
   return res.sendStatus(403)
 }
-
+//TODO: Doan nay logic co van de
 const updateLeaveToTimesheet = async (userId, dateList) => {
   dateList.forEach(async (element) => {
     const data = await execute(getTimesheetUserDate, {

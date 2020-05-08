@@ -1,6 +1,6 @@
 import { execute } from '@root/util.js'
 import { timesheetApplicationCollection } from '@root/database'
-import { status } from '@constants/index'
+import { applicationStatus } from '@root/constants.js'
 import getExistTimesheetApp from '@routes/applications/timesheets/_timesheetAppId/get.js'
 import checkPermissionOfManager from '@helpers/project/checkPermissionOfManager'
 import initNewApprovalUser from '@helpers/users/initNewApprovalUser'
@@ -16,7 +16,7 @@ export default async function(req, res) {
 
   if (responseTimesheet.status === 404 || !responseTimesheet.body) return res.sendStatus(404)
   const exitTimesheetApp = responseTimesheet.body
-  if (exitTimesheetApp.status !== status.inPending) {
+  if (exitTimesheetApp.status !== applicationStatus.inPending) {
     return res.status(400).send({ message: 'This Application has been already approved/rejected.' })
   }
 
@@ -34,10 +34,10 @@ export default async function(req, res) {
     approvalUsers: firebase.firestore.FieldValue.arrayUnion(newApprovalUser)
   }
   if (!isApproved) {
-    await saveTimesheetApp(timesheetAppId, { ...updateTimesheetApp, status: status.reject })
+    await saveTimesheetApp(timesheetAppId, { ...updateTimesheetApp, status: applicationStatus.reject })
     return res.send( { message: "Rejected successfully." } )
   } else if (totalApprovalPoints >= process.env.POSITION_ADMIN) {
-    await saveTimesheetApp(timesheetAppId, { ...updateTimesheetApp, status: status.approved })
+    await saveTimesheetApp(timesheetAppId, { ...updateTimesheetApp, status: applicationStatus.approved })
     return res.send( { message: "Approved successfully." } )
   } else {
     await saveTimesheetApp(timesheetAppId, updateTimesheetApp)

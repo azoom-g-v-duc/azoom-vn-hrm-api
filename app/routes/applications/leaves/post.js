@@ -1,6 +1,6 @@
 import { execute } from '@root/util'
 import saveLeaveApplication from '@routes/applications/leaves/put.js'
-import * as constants from '@root/constants/index'
+import { applicationStatus } from '@root/constants.js'
 import { parse, eachDayOfInterval, format } from 'date-fns/fp'
 
 module.exports = async (req, res) => {
@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
     requiredContent,
     leaveTypeId,
     createdDate: new Date(),
-    status: constants.status.pending,
+    status: applicationStatus.pending,
     isActive: true,
   }
   const result = await execute(saveLeaveApplication, { body: data })

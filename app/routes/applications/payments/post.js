@@ -1,7 +1,7 @@
 import { paymentCollection } from '@root/database'
 import getRole from '@helpers/users/getRole.js'
 import { format } from 'date-fns/fp'
-import { paymentIdPrefix } from '@constants/index.js'
+import { paymentIdPrefix } from '@root/constants.js'
 
 export default async (req, res) => {
   const userId = req.user.id

@@ -48,9 +48,7 @@
     "@routes": "./routes",
     "@middleware": "./middleware",
     "@helpers": "./helpers",
-    "@util": "./util",
-    "@cloudStoreDatabase": "fb-cloud-store-database",
-    "@constants": "./constants"
+    "@util": "./util"
   },
   "engines": {
     "node": "10"

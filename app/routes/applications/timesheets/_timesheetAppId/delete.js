@@ -1,5 +1,5 @@
 import { execute } from '@root/util.js'
-import { status } from '@constants/index'
+import { applicationStatus } from '@root/constants.js'
 import { timesheetApplicationCollection } from '@root/database'
 import getExistTimesheetApp from '@routes/applications/timesheets/_timesheetAppId/get.js'
 import getRole from '@helpers/users/getRole'
@@ -12,7 +12,7 @@ export default async (req, res) => {
   const exitTimesheetApp = responseTimesheetApp.body
 
   if (responseTimesheetApp.status === 404 || !responseTimesheetApp.body ) return res.sendStatus(404)
-  if (exitTimesheetApp.status !== status.inPending || exitTimesheetApp.approvalUsers.length !== 0) {
+  if (exitTimesheetApp.status !== applicationStatus.inPending || exitTimesheetApp.approvalUsers.length !== 0) {
     return res.status(400).send({ message: 'You cannot delete the application which was approved/rejected.' })
   }
   if (role !== 'admin' && exitTimesheetApp.userId !== userId) return res.sendStatus(403)

@@ -1,5 +1,5 @@
 import { leaveApplicationCollection } from '@root/database.js'
-import { status } from '@constants'
+import { applicationStatus } from '@root/constants.js'
 import getRole from '@helpers/users/getRole'
 
 export default async (req, res) => {
@@ -13,7 +13,7 @@ export default async (req, res) => {
 
     const role = await getRole(req.user.id)
     if (
-      status === status.pending &&
+      status === applicationStatus.pending &&
       approvalUsers.length === 0 &&
       (role === 'admin' || role === 'editor' || userId === req.user.id)
     ) {
