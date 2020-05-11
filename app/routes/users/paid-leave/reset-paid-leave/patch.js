@@ -1,7 +1,7 @@
 import firebase from 'firebase'
 import { format } from 'date-fns/fp'
 import { userCollection } from '@root/database'
-import authGoogleSchedulerReq from '@helpers/users/authGoogleSchedulerReq'
+import googleCloudScheduler from '@helpers/verifyRequests/googleCloudScheduler'
 const fireStore = firebase.firestore()
 const officialContractType = 2
 const validDateReset = '31/3'
@@ -11,7 +11,7 @@ export default async (req, res) => {
     const nowDate = format('dd/MM', new Date())
     if (nowDate !== validDateReset) return res.sendStatus(400)
     const authToken = req.header('AUTHORIZATION') || ''
-    const isValidToken = await authGoogleSchedulerReq(authToken)
+    const isValidToken = await googleCloudScheduler(authToken)
     if (!isValidToken) return res.sendStatus(401)
     const officialUsers = await userCollection()
       .where('contractType', '==', officialContractType)

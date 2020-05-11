@@ -11,7 +11,7 @@ export default async (authToken) => {
   const validateInfo = JSON.parse(response.body)
   const isEmailVerified = validateInfo.email_verified
   const isEmailValid = validateInfo.email === emailValid
-  const isTimeExpired = Math.floor(+new Date() / 1000) - validateInfo.exp > 0
+  const isTimeExpired = Math.floor(Number(new Date()) / 1000) - validateInfo.exp > 0
   const isAudienceValid = validateInfo.aud === audienceValid
   if (
     !isEmailVerified ||

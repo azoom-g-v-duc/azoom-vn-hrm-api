@@ -3,11 +3,13 @@ import getRole from '@helpers/users/getRole'
 import { userCollection } from '@root/database'
 const officialContractType = 2
 
+// TODO: Suar routes thanh /paid-leave/substract-paid-leaves
 export default async (req, res) => {
   const { userId } = req.params
   try {
-    const role = await getRole(req.user.id)
-    if (role !== 'admin' || role !== 'editor') return res.sendStatus(403)
+    const role = await getRole(req.user.positionPermissionId)
+    if (!['admin', 'editor'].includes(role)) return res.sendStatus(403)
+    // TODO: Cho phep tru ngay nghi phep theo list user
     const officialUser = await userCollection()
       .where('id', '==', userId)
       .where('contractType', '==', officialContractType)

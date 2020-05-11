@@ -4,10 +4,9 @@ import getRole from '@helpers/users/getRole.js'
 
 export default async (req, res) => {
   let { page = 1, limit = 15 } = req.query
-  const userId = req.user.id
 
-  const role = await getRole(userId)
-  if (role !== 'admin' && role !== 'editor') return res.sendStatus(403)
+  const role = await getRole(req.user.positionPermissionId)
+  if (!['admin', 'editor'].includes(role)) return res.sendStatus(403)
 
   // TODO: page, limit must be greater than 0  (handle be OpenAPI)
   // TODO: remove 2 line parser below when openAPI is applied

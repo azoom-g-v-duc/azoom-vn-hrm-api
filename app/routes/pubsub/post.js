@@ -1,5 +1,5 @@
 import { PubSub } from '@google-cloud/pubsub'
-import verifySlackRequest from '@helpers/verify-requests/slack'
+import verifySlackRequest from '@helpers/verifyRequests/slack'
 const pubsub = new PubSub()
 
 export default async (req, res) => {

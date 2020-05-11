@@ -7,7 +7,7 @@ import getRole from '@helpers/users/getRole'
 export default async (req, res) => {
   const userId = req.user.id
   const { timesheetAppId } = req.params
-  const role = await getRole(userId)
+  const role = await getRole(req.user.positionPermissionId)
   const responseTimesheetApp = await execute(getExistTimesheetApp, { params: { timesheetAppId } } )
   const exitTimesheetApp = responseTimesheetApp.body
 

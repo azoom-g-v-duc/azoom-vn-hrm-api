@@ -1,6 +1,6 @@
 import { format } from 'date-fns/fp'
 import _ from 'lodash/fp'
-import { isAdmin } from '@helpers/check-rule'
+import getRole from '@helpers/users/getRole'
 import updateMember from '@helpers/project/updateMember'
 import { projectCollection } from '@root/database.js'
 import { execute } from '@root/util.js'
@@ -11,7 +11,8 @@ import getMemberId from '@routes/projects/_projectId/members/_memberId/get.js'
 export default async (req, res) => {
   try {
     const { projectId, memberId } = req.params
-    if (!isAdmin(req.user.positionPermissionId)) res.sendStatus(403)
+    const role = await getRole(req.user.positionPermissionId)
+    if (role !== 'admin') return res.sendStatus(403)
     const listMember = await execute(getMembers, {
       params: { projectId },
     })

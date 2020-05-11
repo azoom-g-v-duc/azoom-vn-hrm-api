@@ -4,7 +4,7 @@
  * @param {*} req 
  * @param {*} res 
  */
-import{ verifyToken, generateToken } from '@helpers/jwt-helper'
+import{ verifyToken, generateToken } from '@helpers/jwtToken'
 
 module.exports = async (req, res) =>  {
   const refreshTokenFromClient = req.body.refreshToken

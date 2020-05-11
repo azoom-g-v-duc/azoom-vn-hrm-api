@@ -1,5 +1,5 @@
-import crypto  from 'crypto'
-import qs  from 'qs'
+import crypto from 'crypto'
+import qs from 'qs'
 
 export default async (req) => {
   const slackSigningSecret = process.env.SLACK_SIGNING_SECRET

@@ -5,10 +5,9 @@ import getUser from '@routes/users/_userId/get.js'
 
 export default async (req, res) => {
   const { userId } = req.params
-  const userUpdateId = req.body.userId
   const { positionPermissionId } = req.body
 
-  const role = await getRole(userUpdateId)
+  const role = await getRole(req.user.positionPermissionId)
   if (role !== 'admin') return res.sendStatus(403)
 
   const user = await execute(getUser, { params: { userId } })

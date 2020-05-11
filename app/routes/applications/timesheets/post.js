@@ -1,19 +1,18 @@
 import { timesheetApplicationCollection } from '@root/database'
 import { format } from 'date-fns/fp'
 import { timesheetAppIdPrefix } from '@root/constants.js'
-import initNewId from '@helpers/initNewId'
 
 export default async (req, res) => {
   const userId = req.user.id
   const newTimesheetApp = req.body
   const defaultTimesheetApp = {
-    id: timesheetAppIdPrefix + '_' + format('yyyyMMddHHmmss', new Date()),
+    id: timesheetAppIdPrefix + '_' + format('yyyyMMdd-HHmmss', new Date()),
     userId,
     approvalUsers: [],
     startTime: '',
     endTime: '',
     requiredDates: '',
-    timesheetId: initNewId(userId, new Date(newTimesheetApp.requiredDates)),
+    timesheetId: userId + '_' + format('yyyyMMdd', new Date(newTimesheetApp.requiredDates)),
     requiredContent: '',
     status: -1,
     isActive: 1,

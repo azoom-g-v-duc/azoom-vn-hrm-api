@@ -6,8 +6,8 @@ import getRole from '@helpers/users/getRole'
 module.exports = async (req, res) => {
   const pageNumber = parseInt(req.query.pageNumber) || 0
   const count = parseInt(req.query.count) || ''
-  const role = await getRole(req.user.id)
-  if (role === 'admin' || role === 'editor') {
+  const role = await getRole(req.user.positionPermissionId)
+  if (['admin', 'editor'].includes(role)) {
     return res.send(await getAllLeaveAppOfUserList(pageNumber, count, []))
   }
   if (role === 'project manager') {
@@ -35,14 +35,14 @@ module.exports = async (req, res) => {
 }
 
 const getAllLeaveAppOfUserList = async (page, number, userIdList) => {
-  
+
   const result = { count: 0, data: [] }
   let query = await leaveApplicationCollection().orderBy('created', 'desc')
   if (userIdList && userIdList.length) {
     query = query.where('userId', 'in', userIdList)
   }
   const datall = await query.get()
-  
+
   result.count = datall.empty ? 0 : await datall.docs.length
   if (!page) {
     result.data = datall.empty ? '' : await datall.docs.map((doc) => doc.data())

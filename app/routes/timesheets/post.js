@@ -1,11 +1,16 @@
 import { timesheetCollection } from '@root/database'
-import initTimesheetId from '@helpers/initNewId'
+import initTimesheetId from '@helpers/'
+import { format } from 'date-fns/fp'
+
 
 export default async (req, res) => {
   try {
     const timesheet = req.body
-    const timesheetId = initTimesheetId(timesheet.userId, new Date())
-    const saveTimesheet = { ...timesheet, id: timesheetId }
+    const timesheetId = timesheet.userId + '_' + format('yyyyMMdd', new Date()) 
+    const saveTimesheet = {
+      ...timesheet, 
+      id: timesheetId
+    }
 
     await timesheetCollection().doc(saveTimesheet.id).set(saveTimesheet)
     res.send(saveTimesheet)

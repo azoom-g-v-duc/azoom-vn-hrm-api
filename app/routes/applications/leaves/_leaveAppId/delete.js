@@ -11,11 +11,11 @@ export default async (req, res) => {
       : {}
     if (!isActive) res.sendStatus(404)
 
-    const role = await getRole(req.user.id)
+    const role = await getRole(req.user.positionPermissionId)
     if (
       status === applicationStatus.pending &&
       approvalUsers.length === 0 &&
-      (role === 'admin' || role === 'editor' || userId === req.user.id)
+      (['admin', 'editor'].includes(role) || userId === req.user.id)
     ) {
       await leaveApplicationCollection().doc(id).update({ isActive: false })
       return res.send({ message: 'Successfully.' })

@@ -12,7 +12,7 @@ export default async (req, res) => {
   const totalIgnorePayment = (page - 1) * limit
 
   const role = await getRole(userId)
-  if(role !== 'user' && role !== 'admin') return res.sendStatus(403) 
+  if(!['admin', 'editor'].includes(role)) return res.sendStatus(403) 
 
   let connection = paymentCollection()
   if (role === 'user') {

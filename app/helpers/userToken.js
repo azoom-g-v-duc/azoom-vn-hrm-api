@@ -1,6 +1,5 @@
-import _ from 'lodash'
+import { defaultsDeep } from 'lodash/fp'
 import { format } from 'date-fns/fp'
-
 import firebase from 'firebase'
 
 import { userTokenCollection } from '@root/database'
@@ -16,9 +15,9 @@ export const userToken = {
 
 export const saveToken = async (userId, tokenCode) => {
   const id = userId + Date.now()
-  const data = _.defaultsDeep(
-    { id: id, userId: userId, tokenCode: tokenCode },
-    userToken
+  const data = defaultsDeep(
+    userToken,
+    { id: id, userId: userId, tokenCode: tokenCode }
   )
   const tokenUser = await userTokenCollection()
     .doc(id)

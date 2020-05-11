@@ -1,4 +1,4 @@
-import { destroyToken, destroyALLTokenOfUser } from '@helpers/token-user'
+import { destroyToken, destroyALLTokenOfUser } from '@helpers/userToken'
 
 export default async (req, res) => {
   const { isAll = false } = req.query

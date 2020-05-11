@@ -7,8 +7,8 @@ export default async (req, res) => {
   const userId = req.user.id
   const payment = req.body
 
-  const role = await getRole(userId)
-  if(!['admin', 'editor'].includes(role)) return res.sendStatus(403)
+  const role = await getRole(req.user.positionPermissionId)
+  if(!role) return res.sendStatus(403)
 
   const id = paymentIdPrefix + '-' + format('yyyyMMddHHmmss', new Date())
 

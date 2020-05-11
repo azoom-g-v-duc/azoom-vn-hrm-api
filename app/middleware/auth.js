@@ -1,5 +1,5 @@
 import express from 'express'
-import { verifyToken } from '@helpers/jwt-helper'
+import { verifyToken } from '@helpers/jwtTokenr'
 import getToken from '@routes/authentications/tokens/get'
 
 const router = new express.Router()

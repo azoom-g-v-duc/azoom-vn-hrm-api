@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import firebase from 'firebase'
 import _ from 'lodash/fp'
-import { generateToken } from '@helpers/jwt-helper'
+import { generateToken } from '@helpers/jwtToken'
 import { userCollection, userTokenCollection } from '@root/database'
 
 const userToken = {

@@ -7,7 +7,7 @@ import getTimesheetUserDate from '@routes/timesheets/get'
 import saveTimesheet from '@routes/timesheets/post'
 import updateTimesheet from '@routes/timesheets/patch'
 import newApprovalUser from '@helpers/users/initNewApprovalUser'
-import calculateApprovalPoints from '@helpers/calculateApprovalPoints'
+import calculateApprovalPoints from '@helpers/applications/calculateApprovalPoints'
 import getRole from '@helpers/users/getRole'
 const timesheet = {
   id: '',
@@ -34,15 +34,14 @@ module.exports = async (req, res) => {
       .status(400)
       .send({ message: 'This Application has been already approved/rejected.' })
   }
-  const role = await getRole(req.user.id)
+  const role = await getRole(req.user.positionPermissionId)
 
   if (
     (await checkPermissionOfManager(
       req.user.id,
       existedLeaveApplication.userId
     )) ||
-    role === 'admin' ||
-    role === 'editor'
+    ['admin', 'editor'].includes(role)
   ) {
     const isUserEditedBefore = existedLeaveApplication.approvalUsers.find(
       (approvalUser) => approvalUser.userId === userId

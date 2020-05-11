@@ -4,7 +4,7 @@ import { applicationStatus } from '@root/constants.js'
 import getExistTimesheetApp from '@routes/applications/timesheets/_timesheetAppId/get.js'
 import checkPermissionOfManager from '@helpers/project/checkPermissionOfManager'
 import initNewApprovalUser from '@helpers/users/initNewApprovalUser'
-import calculateApprovalPoints from '@helpers/calculateApprovalPoints'
+import calculateApprovalPoints from '@helpers/applications/calculateApprovalPoints'
 import getRole from '@helpers/users/getRole'
 import firebase from 'firebase'
 
@@ -23,7 +23,7 @@ export default async function(req, res) {
   const isUserEditedBefore = exitTimesheetApp.approvalUsers.find(approvalUser => approvalUser.userId === userId)
   if (isUserEditedBefore) return res.status(400).send( { message: "This Application has been already approved/rejected." } )
 
-  const role = await getRole(userId)
+  const role = await getRole(req.user.positionPermissionId)
   const permissionToEdit = await checkPermissionOfManager(userId, exitTimesheetApp.userId)
   if (!permissionToEdit && !['admin', 'editor'].includes(role)) return res.sendStatus(403)
 
