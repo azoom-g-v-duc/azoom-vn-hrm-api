@@ -1,0 +1,71 @@
+operationId: users.me.get
+tags:
+  - Users
+summary: Get information of currently logged in user
+
+responses:
+  200:
+    description: Success
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            id:
+              type: string
+              description: the user id
+            dateOfBirth:
+              type: string
+              description:
+            contactType:
+              type: number
+              description: the contact type
+            positionPermissionId:
+              type: number
+              description: the permission level  
+            slackId:
+              type: string
+              description: the user's slack id
+            userName:
+              type: string
+              description: the user name
+            fullName:
+              type: string
+              description: the user's full name
+            address:
+              type: string
+              description: the address
+            zipCode:
+              type: string
+              description: the zip code
+            email:
+              type: string
+              description: the user's email
+            tel:
+              type: string
+              description: the telephone number  
+          example:
+            {
+              "dateOfBirth": "1996/05/4",
+              "contractType": 2,
+              "positionPermissionId": 3,
+              "slackId": "U011XQFPJSJ",
+              "userName": "azoomvn",
+              "fullName": "nguyen van Phong",
+              "address": "xxx",
+              "zipCode": "",
+              "totalPaidLeaveDate": 0,
+              "position": "Dev",
+              "zipcode": "10000",
+              "email": "phong@azoom.jp",
+              "tel": "0",
+              "id": "azoom005"
+            }
+  400:
+    $ref: "#/components/responses/400"
+  401:
+    $ref: "#/components/responses/401"
+  404:
+    $ref: "#/components/responses/404"  
+  500:
+    $ref: "#/components/responses/500"

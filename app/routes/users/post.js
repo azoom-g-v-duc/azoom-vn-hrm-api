@@ -19,7 +19,7 @@ export default async (req, res) => {
     fullName: '',
     email: '',
     password: '',
-    birthDate: '',
+    dateOfBirth: '',
     address: '',
     tel: '',
     zipCode: '',
