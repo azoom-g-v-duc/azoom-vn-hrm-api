@@ -18,7 +18,7 @@ export const authMiddleware = router.use(async (req, res, next) => {
     req.token = resultcheck.token
     return next()
   }
-  return res.send('No token provided.')
+  return res.status(401).send('No token provided.')
 })
 
 function checkRequestReferer (requestReferer) {
