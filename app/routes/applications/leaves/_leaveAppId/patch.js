@@ -9,6 +9,8 @@ import updateTimesheet from '@routes/timesheets/patch'
 import newApprovalUser from '@helpers/users/initNewApprovalUser'
 import calculateApprovalPoints from '@helpers/applications/calculateApprovalPoints'
 import getRole from '@helpers/users/getRole'
+import { format } from 'date-fns/fp'
+
 const timesheet = {
   id: '',
   userId: '',
@@ -51,7 +53,7 @@ module.exports = async (req, res) => {
         message: 'This Application has been already approved/rejected.',
       })
 
-    const approvalUser = newApprovalUser(req.user.id, isApproved)
+    const approvalUser = newApprovalUser(req.user, isApproved)
     existedLeaveApplication.approvalUsers.push(approvalUser)
 
     if (!isApproved) {

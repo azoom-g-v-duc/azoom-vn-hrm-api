@@ -1,7 +1,7 @@
 import firebase from 'firebase'
 import { format } from 'date-fns/fp'
 import { userCollection } from '@root/database'
-import googleCloudScheduler from '@helpers/verifyRequests/googleCloudScheduler'
+import googleCloudScheduler from '@middleware/verifyRequests/googleCloudScheduler'
 const fireStore = firebase.firestore()
 const officialContractType = 2
 const validDateReset = '31/3'

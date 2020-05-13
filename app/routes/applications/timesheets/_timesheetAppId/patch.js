@@ -27,7 +27,7 @@ export default async function(req, res) {
   const permissionToEdit = await checkPermissionOfManager(userId, exitTimesheetApp.userId)
   if (!permissionToEdit && !['admin', 'editor'].includes(role)) return res.sendStatus(403)
 
-  const newApprovalUser = await initNewApprovalUser(userId, isApproved)
+  const newApprovalUser = await initNewApprovalUser(req.user, isApproved)
   const totalApprovalPoints = calculateApprovalPoints([...exitTimesheetApp.approvalUsers, newApprovalUser])
   const updateTimesheetApp = {
     updated: new Date(),
