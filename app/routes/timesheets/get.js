@@ -3,7 +3,7 @@ import { endOfDay, format, parse, startOfMonth, lastDayOfMonth } from 'date-fns/
 
 export default async (req, res) => {
   try {
-    const { userIds = '', time, startDate, endDate } = req.query
+    const { userIds = '', time = new Date(), startDate, endDate } = req.query
 
     let query = timesheetCollection()
     if (userIds.length) {

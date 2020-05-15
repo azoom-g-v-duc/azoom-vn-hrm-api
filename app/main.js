@@ -36,7 +36,7 @@ app.use(
   }
 )
 
-app.use(authMiddleware)
+//app.use(authMiddleware)
 
 app.use(
   expressOpenApiMiddleware(swaggerFile, app, {
