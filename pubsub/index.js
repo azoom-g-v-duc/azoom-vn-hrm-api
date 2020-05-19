@@ -8,7 +8,7 @@ const hrm = got.extend({
 
 exports.hrmPubSub = ( message ) => {
   const pubSubObj = JSON.parse(Buffer.from(message.data, 'base64').toString())
-  hrm.post('slack/slash-commands', {
+  hrm.post('slack/slash-command', {
     body: {...pubSubObj}
   })
     .then(() => console.log('OK'))

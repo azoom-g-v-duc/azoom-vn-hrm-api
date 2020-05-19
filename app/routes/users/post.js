@@ -4,6 +4,7 @@ import { userCollection } from '@root/database'
 import getRole from '@helpers/users/getRole.js'
 import getUserByEmail from '@routes/users/_email/get'
 import getUserById from '@routes/users/_userId/get'
+import { execute } from '@root/util.js'
 
 export default async (req, res) => {
   const user = req.body
@@ -27,7 +28,7 @@ export default async (req, res) => {
     contractType: 0,
     position: 'Dev',
     positionPermissionId: 1,
-    isActive: true,
+    isActive: 1,
     created: new Date(),
     updated: '',
   }

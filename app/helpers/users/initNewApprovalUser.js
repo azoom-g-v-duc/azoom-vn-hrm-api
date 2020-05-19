@@ -7,8 +7,8 @@ export default async function (userId, isApproved) {
   const user = userResponse.body
   const approvalPoint = isApproved ? user.positionPermissionId : 0
   return {
-    userId: user.body.id,
-    name: user.body.fullName,
+    userId: user.id,
+    name: user.fullName,
     createdDate: new Date(),
     approvalPoint,
   }

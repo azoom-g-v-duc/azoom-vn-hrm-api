@@ -22,6 +22,7 @@ export default async (req, res) => {
     created: new Date(),
     updated: ''
   }
+  
   const newPayment = {...defaultPayment, ...payment}
   await paymentCollection().doc(newPayment.id).set(newPayment)
   return res.send(newPayment)

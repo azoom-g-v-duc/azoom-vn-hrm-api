@@ -3,7 +3,7 @@ import getProject from '@routes/projects/get'
 import { leaveApplicationCollection } from '@root/database'
 import getRole from '@helpers/users/getRole'
 
-module.exports = async (req, res) => {
+export default async (req, res) => {
   const pageNumber = parseInt(req.query.pageNumber) || 0
   const count = parseInt(req.query.count) || ''
 

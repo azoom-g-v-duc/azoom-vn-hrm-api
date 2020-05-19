@@ -9,5 +9,5 @@ export default async (req, res) => {
     })
   const reqBuffer = Buffer.from(JSON.stringify({body: {...req.body}, headers: {...req.headers}})) 
   await pubsub.topic(process.env.PUBSUB_TOPIC_NAME).publish(reqBuffer)
-  return res.send('Thanks for using our services. We will notify you when your task is done!')
+  return res.send('We processing your submit. Just a moment!')
 }

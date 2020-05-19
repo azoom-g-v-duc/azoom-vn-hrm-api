@@ -25,8 +25,7 @@ export default async (req, res) => {
     const { id, managerId, projectName } = req.body
 
     const role = await getRole(createdUserId)
-    if (role !== 'admin' || role !== 'project manager')
-      return res.sendStatus(403)
+    if (role !== 'admin') return res.sendStatus(403)
     if (id == '' || managerId == '' || projectName == '')
       return res.sendStatus(400)
     const user = await execute(getUserId, {
@@ -38,7 +37,7 @@ export default async (req, res) => {
     })
     if (isValidProjectId.status != 404) return res.sendStatus(400)
     const newProject = {
-      createUserId,
+      createdUserId,
       ..._.defaultsDeep(initProject, req.body),
     }
     await projectCollection().doc(newProject.id).set(newProject)
